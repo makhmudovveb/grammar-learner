@@ -1,1055 +1,2608 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>Grammar Lab</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --ink:#1C2340;
-  --ink-soft:#4A5178;
-  --paper:#F3F4F9;
-  --surface:#FFFFFF;
-  --line:#E1E3F0;
-  --accent:#EF6351;
-  --accent-soft:#FDEAE6;
-  --teal:#1E9E8B;
-  --teal-soft:#E1F5F1;
-  --amber:#E7A73B;
-  --amber-soft:#FBF1DD;
-  --good:#1E9E5C;
-  --good-soft:#E4F7EC;
-  --bad:#E14F4F;
-  --bad-soft:#FCE9E9;
-  --radius-lg:22px;
-  --radius-md:14px;
-  --radius-sm:9px;
-  --shadow:0 2px 14px rgba(28,35,64,0.07);
-}
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-body{
-  font-family:'Inter',sans-serif;
-  background:var(--paper);
-  color:var(--ink);
-  min-height:100vh;
-  -webkit-font-smoothing:antialiased;
-}
-h1,h2,h3,.display{font-family:'Sora',sans-serif;}
-.app{
-  max-width:560px;
-  margin:0 auto;
-  min-height:100vh;
-  background:var(--paper);
-  display:flex;
-  flex-direction:column;
-  position:relative;
-}
-/* ---- top bar ---- */
-.topbar{
-  padding:18px 20px 0 20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:10px;
-}
-.brand{display:flex;flex-direction:column;gap:2px;}
-.brand .mark{
-  font-family:'Sora',sans-serif;
-  font-weight:700;
-  font-size:20px;
-  letter-spacing:-0.01em;
-}
-.brand .sub{
-  font-size:12.5px;
-  color:var(--ink-soft);
-}
-.langswitch{
-  display:flex;
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:3px;
-  gap:2px;
-  flex-shrink:0;
-}
-.langswitch button{
-  border:none;
-  background:transparent;
-  padding:6px 10px;
-  border-radius:999px;
-  font-family:'Sora',sans-serif;
-  font-weight:600;
-  font-size:12px;
-  color:var(--ink-soft);
-  cursor:pointer;
-  transition:background .15s, color .15s;
-}
-.langswitch button.active{
-  background:var(--ink);
-  color:#fff;
-}
-/* ---- tabs ---- */
-.tabs{
-  margin:18px 20px 4px 20px;
-  display:flex;
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:4px;
-}
-.tabs button{
-  flex:1;
-  border:none;
-  background:transparent;
-  padding:10px 12px;
-  border-radius:999px;
-  font-family:'Sora',sans-serif;
-  font-weight:600;
-  font-size:14px;
-  color:var(--ink-soft);
-  cursor:pointer;
-  transition:background .18s,color .18s;
-}
-.tabs button.active{
-  background:var(--ink);
-  color:#fff;
-}
-.view{
-  padding:16px 20px 40px 20px;
-  flex:1;
-}
-.section-label{
-  font-size:13px;
-  color:var(--ink-soft);
-  margin:10px 2px 12px 2px;
-}
-/* ---- topic grid (folder style) ---- */
-.folder-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-.folder-card{
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:var(--radius-md);
-  padding:16px 14px;
-  cursor:pointer;
-  text-align:left;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  min-height:112px;
-  transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-}
-.folder-card:active{transform:scale(.97);}
-.folder-card:hover{box-shadow:var(--shadow);border-color:transparent;}
-.folder-icon{
-  width:34px;height:34px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Sora',sans-serif;font-weight:700;font-size:15px;
-  color:#fff;
-}
-.folder-card .fname{
-  font-family:'Sora',sans-serif;
-  font-weight:600;
-  font-size:14.5px;
-  line-height:1.3;
-}
-.t0 .folder-icon{background:var(--accent);}
-.t1 .folder-icon{background:var(--teal);}
-.t2 .folder-icon{background:var(--amber);}
-.t3 .folder-icon{background:var(--ink);}
-/* ---- detail panel (chat style) ---- */
-.panel{
-  animation:slideIn .22s ease;
-}
-@keyframes slideIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-.backrow{
-  display:flex;align-items:center;gap:8px;
-  margin-bottom:14px;
-  cursor:pointer;
-  color:var(--ink-soft);
-  font-size:14px;
-  font-weight:600;
-  width:fit-content;
-}
-.backrow svg{flex-shrink:0;}
-.panel-title{
-  font-size:21px;
-  font-weight:700;
-  margin:0 0 14px 0;
-}
-.chat{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.bubble{
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:var(--radius-md);
-  padding:13px 15px;
-  font-size:14.5px;
-  line-height:1.55;
-  max-width:92%;
-}
-.bubble.example{
-  background:var(--teal-soft);
-  border-color:transparent;
-  font-style:normal;
-  border-left:3px solid var(--teal);
-  color:#12463d;
-}
-.bubble b{font-family:'Sora',sans-serif;}
-.teacher-row{display:flex;gap:9px;align-items:flex-start;}
-.avatar{
-  width:30px;height:30px;border-radius:50%;
-  background:var(--ink);color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Sora',sans-serif;font-weight:700;font-size:13px;
-  flex-shrink:0;margin-top:2px;
-}
-/* ---- exercise type cards ---- */
-.type-list{display:flex;flex-direction:column;gap:10px;}
-.type-card{
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:var(--radius-md);
-  padding:16px;
-  display:flex;
-  align-items:center;
-  gap:14px;
-  cursor:pointer;
-  transition:border-color .15s, transform .12s;
-}
-.type-card:active{transform:scale(.98);}
-.type-card:hover{border-color:var(--ink);}
-.type-badge{
-  width:40px;height:40px;border-radius:11px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Sora',sans-serif;font-weight:700;color:#fff;font-size:16px;
-  flex-shrink:0;
-}
-.type-info .tname{font-family:'Sora',sans-serif;font-weight:600;font-size:15px;}
-.type-info .tdesc{font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
-.type-arrow{margin-left:auto;color:var(--ink-soft);flex-shrink:0;}
-/* ---- quiz ---- */
-.progress-wrap{
-  display:flex;align-items:center;gap:10px;
-  margin-bottom:18px;
-}
-.progress-bar{
-  flex:1;height:6px;background:var(--line);border-radius:99px;overflow:hidden;
-}
-.progress-fill{
-  height:100%;background:var(--ink);border-radius:99px;
-  transition:width .2s ease;
-}
-.progress-text{font-size:12.5px;color:var(--ink-soft);font-weight:600;flex-shrink:0;}
-.qcard{
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:var(--radius-md);
-  padding:16px;
-  margin-bottom:12px;
-}
-.qcard .qnum{
-  font-family:'Sora',sans-serif;font-weight:700;font-size:12px;
-  color:var(--ink-soft);margin-bottom:6px;
-}
-.qcard .qtext{font-size:15px;line-height:1.5;margin-bottom:12px;}
-.qcard .qtext .blank{
-  display:inline-block;min-width:64px;border-bottom:2px solid var(--ink-soft);
-  text-align:center;
-}
-.opt-list{display:flex;flex-direction:column;gap:8px;}
-.opt-list.chips{flex-direction:row;flex-wrap:wrap;}
-.opt{
-  border:1.5px solid var(--line);
-  background:var(--paper);
-  border-radius:var(--radius-sm);
-  padding:10px 13px;
-  font-size:14px;
-  font-family:'Inter',sans-serif;
-  cursor:pointer;
-  text-align:left;
-  transition:border-color .12s, background .12s;
-}
-.opt-list.chips .opt{border-radius:999px;padding:8px 15px;}
-.opt.selected{border-color:var(--ink);background:#fff;font-weight:600;}
-.opt.correct{border-color:var(--good);background:var(--good-soft);font-weight:600;}
-.opt.incorrect{border-color:var(--bad);background:var(--bad-soft);}
-.opt[disabled],.opt.locked{cursor:default;}
-.fill-row{display:flex;align-items:center;gap:8px;}
-.fill-input{
-  flex:1;
-  border:1.5px solid var(--line);
-  border-radius:var(--radius-sm);
-  padding:10px 13px;
-  font-size:14px;
-  font-family:'Inter',sans-serif;
-  background:var(--paper);
-}
-.fill-input:focus{outline:none;border-color:var(--ink);background:#fff;}
-.fill-input.correct{border-color:var(--good);background:var(--good-soft);}
-.fill-input.incorrect{border-color:var(--bad);background:var(--bad-soft);}
-.qbadge{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:12px;font-weight:700;margin-top:10px;
-  padding:4px 10px;border-radius:999px;
-}
-.qbadge.correct{background:var(--good-soft);color:var(--good);}
-.qbadge.incorrect{background:var(--bad-soft);color:var(--bad);}
-.qbadge .why{
-  cursor:pointer;
-  width:17px;height:17px;border-radius:50%;
-  background:var(--bad);color:#fff;
-  display:inline-flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;margin-left:2px;
-}
-.action-bar{
-  position:sticky;bottom:0;
-  background:linear-gradient(to top, var(--paper) 65%, rgba(243,244,249,0));
-  padding:18px 0 6px 0;
-  margin-top:6px;
-}
-.btn{
-  width:100%;
-  border:none;
-  background:var(--ink);
-  color:#fff;
-  font-family:'Sora',sans-serif;
-  font-weight:600;
-  font-size:15px;
-  padding:14px;
-  border-radius:var(--radius-sm);
-  cursor:pointer;
-  transition:opacity .15s;
-}
-.btn:active{opacity:.85;}
-.btn.ghost{
-  background:var(--surface);
-  border:1.5px solid var(--line);
-  color:var(--ink);
-}
-.btn-row{display:flex;gap:10px;}
-.btn-row .btn{flex:1;}
-/* ---- result ---- */
-.result-card{
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:var(--radius-lg);
-  padding:28px 20px;
-  text-align:center;
-  margin-bottom:16px;
-}
-.result-score{
-  font-family:'Sora',sans-serif;font-weight:700;font-size:44px;
-  margin:6px 0;
-}
-.result-title{font-family:'Sora',sans-serif;font-weight:700;font-size:17px;}
-.result-sub{color:var(--ink-soft);font-size:13.5px;margin-top:4px;}
-/* ---- modal ---- */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(28,35,64,0.45);
-  display:flex;align-items:flex-end;justify-content:center;
-  z-index:50;
-  animation:fadeIn .15s ease;
-}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-@media (min-width:601px){.modal-overlay{align-items:center;}}
-.modal{
-  background:#fff;
-  border-radius:20px 20px 0 0;
-  padding:22px 22px 26px 22px;
-  max-width:480px;width:100%;
-  animation:slideUp .2s ease;
-}
-@media (min-width:601px){.modal{border-radius:20px;}}
-@keyframes slideUp{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-.modal h3{margin:0 0 10px 0;font-size:16px;}
-.modal p{margin:0 0 18px 0;font-size:14.5px;line-height:1.55;color:var(--ink-soft);}
-.modal .close-btn{
-  width:100%;border:none;background:var(--paper);color:var(--ink);
-  font-family:'Sora',sans-serif;font-weight:600;font-size:14px;
-  padding:12px;border-radius:var(--radius-sm);cursor:pointer;
-}
-::selection{background:var(--accent-soft);}
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <title>Learn grammar here!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #1c2340;
+        --ink-soft: #4a5178;
+        --paper: #f3f4f9;
+        --surface: #ffffff;
+        --line: #e1e3f0;
+        --accent: #ef6351;
+        --accent-soft: #fdeae6;
+        --teal: #1e9e8b;
+        --teal-soft: #e1f5f1;
+        --amber: #e7a73b;
+        --amber-soft: #fbf1dd;
+        --good: #1e9e5c;
+        --good-soft: #e4f7ec;
+        --bad: #e14f4f;
+        --bad-soft: #fce9e9;
+        --radius-lg: 22px;
+        --radius-md: 14px;
+        --radius-sm: 9px;
+        --shadow: 0 2px 14px rgba(28, 35, 64, 0.07);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1,
+      h2,
+      h3,
+      .display {
+        font-family: "Sora", sans-serif;
+      }
+      .app {
+        max-width: 560px;
+        margin: 0 auto;
+        min-height: 100vh;
+        background: var(--paper);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+      /* ---- top bar ---- */
+      .topbar {
+        padding: 18px 20px 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .brand {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .brand .mark {
+        font-family: "Sora", sans-serif;
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: -0.01em;
+      }
+      .brand .sub {
+        font-size: 12.5px;
+        color: var(--ink-soft);
+      }
+      .langswitch {
+        display: flex;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 3px;
+        gap: 2px;
+        flex-shrink: 0;
+      }
+      .langswitch button {
+        border: none;
+        background: transparent;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-family: "Sora", sans-serif;
+        font-weight: 600;
+        font-size: 12px;
+        color: var(--ink-soft);
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .langswitch button.active {
+        background: var(--ink);
+        color: #fff;
+      }
+      /* ---- tabs ---- */
+      .tabs {
+        margin: 18px 20px 4px 20px;
+        display: flex;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 4px;
+      }
+      .tabs button {
+        flex: 1;
+        border: none;
+        background: transparent;
+        padding: 10px 12px;
+        border-radius: 999px;
+        font-family: "Sora", sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--ink-soft);
+        cursor: pointer;
+        transition:
+          background 0.18s,
+          color 0.18s;
+      }
+      .tabs button.active {
+        background: var(--ink);
+        color: #fff;
+      }
+      .view {
+        padding: 16px 20px 40px 20px;
+        flex: 1;
+      }
+      .section-label {
+        font-size: 13px;
+        color: var(--ink-soft);
+        margin: 10px 2px 12px 2px;
+      }
+      /* ---- topic grid (folder style) ---- */
+      .folder-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .folder-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        padding: 16px 14px;
+        cursor: pointer;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 112px;
+        transition:
+          transform 0.12s ease,
+          box-shadow 0.12s ease,
+          border-color 0.12s ease;
+      }
+      .folder-card:active {
+        transform: scale(0.97);
+      }
+      .folder-card:hover {
+        box-shadow: var(--shadow);
+        border-color: transparent;
+      }
+      .folder-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Sora", sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        color: #fff;
+      }
+      .folder-card .fname {
+        font-family: "Sora", sans-serif;
+        font-weight: 600;
+        font-size: 14.5px;
+        line-height: 1.3;
+      }
+      .t0 .folder-icon {
+        background: var(--accent);
+      }
+      .t1 .folder-icon {
+        background: var(--teal);
+      }
+      .t2 .folder-icon {
+        background: var(--amber);
+      }
+      .t3 .folder-icon {
+        background: var(--ink);
+      }
+      /* ---- detail panel (chat style) ---- */
+      .panel {
+        animation: slideIn 0.22s ease;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .backrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+        cursor: pointer;
+        color: var(--ink-soft);
+        font-size: 14px;
+        font-weight: 600;
+        width: fit-content;
+      }
+      .backrow svg {
+        flex-shrink: 0;
+      }
+      .panel-title {
+        font-size: 21px;
+        font-weight: 700;
+        margin: 0 0 14px 0;
+      }
+      .chat {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .bubble {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        padding: 13px 15px;
+        font-size: 14.5px;
+        line-height: 1.55;
+        max-width: 92%;
+      }
+      .bubble.example {
+        background: var(--teal-soft);
+        border-color: transparent;
+        font-style: normal;
+        border-left: 3px solid var(--teal);
+        color: #12463d;
+      }
+      .bubble b {
+        font-family: "Sora", sans-serif;
+      }
+      .teacher-row {
+        display: flex;
+        gap: 9px;
+        align-items: flex-start;
+      }
+      .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--ink);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Sora", sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      /* ---- exercise type cards ---- */
+      .type-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .type-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          transform 0.12s;
+      }
+      .type-card:active {
+        transform: scale(0.98);
+      }
+      .type-card:hover {
+        border-color: var(--ink);
+      }
+      .type-badge {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Sora", sans-serif;
+        font-weight: 700;
+        color: #fff;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .type-info .tname {
+        font-family: "Sora", sans-serif;
+        font-weight: 600;
+        font-size: 15px;
+      }
+      .type-info .tdesc {
+        font-size: 12.5px;
+        color: var(--ink-soft);
+        margin-top: 2px;
+      }
+      .type-arrow {
+        margin-left: auto;
+        color: var(--ink-soft);
+        flex-shrink: 0;
+      }
+      /* ---- quiz ---- */
+      .progress-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+      .progress-bar {
+        flex: 1;
+        height: 6px;
+        background: var(--line);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: var(--ink);
+        border-radius: 99px;
+        transition: width 0.2s ease;
+      }
+      .progress-text {
+        font-size: 12.5px;
+        color: var(--ink-soft);
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+      .qcard {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        margin-bottom: 12px;
+      }
+      .qcard .qnum {
+        font-family: "Sora", sans-serif;
+        font-weight: 700;
+        font-size: 12px;
+        color: var(--ink-soft);
+        margin-bottom: 6px;
+      }
+      .qcard .qtext {
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 12px;
+      }
+      .qcard .qtext .blank {
+        display: inline-block;
+        min-width: 64px;
+        border-bottom: 2px solid var(--ink-soft);
+        text-align: center;
+      }
+      .opt-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .opt-list.chips {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .opt {
+        border: 1.5px solid var(--line);
+        background: var(--paper);
+        border-radius: var(--radius-sm);
+        padding: 10px 13px;
+        font-size: 14px;
+        font-family: "Inter", sans-serif;
+        cursor: pointer;
+        text-align: left;
+        transition:
+          border-color 0.12s,
+          background 0.12s;
+      }
+      .opt-list.chips .opt {
+        border-radius: 999px;
+        padding: 8px 15px;
+      }
+      .opt.selected {
+        border-color: var(--ink);
+        background: #fff;
+        font-weight: 600;
+      }
+      .opt.correct {
+        border-color: var(--good);
+        background: var(--good-soft);
+        font-weight: 600;
+      }
+      .opt.incorrect {
+        border-color: var(--bad);
+        background: var(--bad-soft);
+      }
+      .opt[disabled],
+      .opt.locked {
+        cursor: default;
+      }
+      .fill-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .fill-input {
+        flex: 1;
+        border: 1.5px solid var(--line);
+        border-radius: var(--radius-sm);
+        padding: 10px 13px;
+        font-size: 14px;
+        font-family: "Inter", sans-serif;
+        background: var(--paper);
+      }
+      .fill-input:focus {
+        outline: none;
+        border-color: var(--ink);
+        background: #fff;
+      }
+      .fill-input.correct {
+        border-color: var(--good);
+        background: var(--good-soft);
+      }
+      .fill-input.incorrect {
+        border-color: var(--bad);
+        background: var(--bad-soft);
+      }
+      .qbadge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-top: 10px;
+        padding: 4px 10px;
+        border-radius: 999px;
+      }
+      .qbadge.correct {
+        background: var(--good-soft);
+        color: var(--good);
+      }
+      .qbadge.incorrect {
+        background: var(--bad-soft);
+        color: var(--bad);
+      }
+      .qbadge .why {
+        cursor: pointer;
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        background: var(--bad);
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        margin-left: 2px;
+      }
+      .action-bar {
+        position: sticky;
+        bottom: 0;
+        background: linear-gradient(
+          to top,
+          var(--paper) 65%,
+          rgba(243, 244, 249, 0)
+        );
+        padding: 18px 0 6px 0;
+        margin-top: 6px;
+      }
+      .btn {
+        width: 100%;
+        border: none;
+        background: var(--ink);
+        color: #fff;
+        font-family: "Sora", sans-serif;
+        font-weight: 600;
+        font-size: 15px;
+        padding: 14px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition: opacity 0.15s;
+      }
+      .btn:active {
+        opacity: 0.85;
+      }
+      .btn.ghost {
+        background: var(--surface);
+        border: 1.5px solid var(--line);
+        color: var(--ink);
+      }
+      .btn-row {
+        display: flex;
+        gap: 10px;
+      }
+      .btn-row .btn {
+        flex: 1;
+      }
+      /* ---- result ---- */
+      .result-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        padding: 28px 20px;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+      .result-score {
+        font-family: "Sora", sans-serif;
+        font-weight: 700;
+        font-size: 44px;
+        margin: 6px 0;
+      }
+      .result-title {
+        font-family: "Sora", sans-serif;
+        font-weight: 700;
+        font-size: 17px;
+      }
+      .result-sub {
+        color: var(--ink-soft);
+        font-size: 13.5px;
+        margin-top: 4px;
+      }
+      /* ---- modal ---- */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(28, 35, 64, 0.45);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        z-index: 50;
+        animation: fadeIn 0.15s ease;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @media (min-width: 601px) {
+        .modal-overlay {
+          align-items: center;
+        }
+      }
+      .modal {
+        background: #fff;
+        border-radius: 20px 20px 0 0;
+        padding: 22px 22px 26px 22px;
+        max-width: 480px;
+        width: 100%;
+        animation: slideUp 0.2s ease;
+      }
+      @media (min-width: 601px) {
+        .modal {
+          border-radius: 20px;
+        }
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(30px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .modal h3 {
+        margin: 0 0 10px 0;
+        font-size: 16px;
+      }
+      .modal p {
+        margin: 0 0 18px 0;
+        font-size: 14.5px;
+        line-height: 1.55;
+        color: var(--ink-soft);
+      }
+      .modal .close-btn {
+        width: 100%;
+        border: none;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Sora", sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 12px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+      }
+      ::selection {
+        background: var(--accent-soft);
+      }
 
-/* ---- verbs tab ---- */
-.verb-row{
-  display:grid;
-  grid-template-columns:1.1fr 1.1fr 1.3fr 1fr;
-  gap:6px;
-  padding:10px 8px;
-  font-size:13px;
-  border-bottom:1px solid var(--line);
-  align-items:center;
-}
-.verb-row.verb-head{
-  font-family:'Sora',sans-serif;
-  font-weight:600;
-  font-size:11.5px;
-  color:var(--ink-soft);
-  border-bottom:1.5px solid var(--ink);
-}
-.verb-row .v1{font-weight:700;font-family:'Sora',sans-serif;}
-.verb-row .vm{color:var(--ink-soft);}
-.verb-rows{
-  max-height:56vh;
-  overflow-y:auto;
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:var(--radius-md);
-  padding:0 6px;
-}
-.verb-empty{padding:24px;text-align:center;color:var(--ink-soft);}
-.verb-card{
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:var(--radius-lg);
-  padding:34px 20px;
-  text-align:center;
-  margin-bottom:16px;
-}
-.verb-v1{
-  font-family:'Sora',sans-serif;
-  font-weight:700;
-  font-size:34px;
-}
-.streak-pill{
-  display:inline-flex;align-items:center;gap:5px;
-  font-family:'Sora',sans-serif;font-weight:600;font-size:12.5px;
-  background:var(--amber-soft);color:#8a5a12;
-  padding:6px 12px;border-radius:999px;
-  margin-bottom:14px;
-}
-</style>
-</head>
-<body>
-<div class="app" id="app"></div>
+      /* ---- verbs tab ---- */
+      .verb-row {
+        display: grid;
+        grid-template-columns: 1.1fr 1.1fr 1.3fr 1fr;
+        gap: 6px;
+        padding: 10px 8px;
+        font-size: 13px;
+        border-bottom: 1px solid var(--line);
+        align-items: center;
+      }
+      .verb-row.verb-head {
+        font-family: "Sora", sans-serif;
+        font-weight: 600;
+        font-size: 11.5px;
+        color: var(--ink-soft);
+        border-bottom: 1.5px solid var(--ink);
+      }
+      .verb-row .v1 {
+        font-weight: 700;
+        font-family: "Sora", sans-serif;
+      }
+      .verb-row .vm {
+        color: var(--ink-soft);
+      }
+      .verb-rows {
+        max-height: 56vh;
+        overflow-y: auto;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        padding: 0 6px;
+      }
+      .verb-empty {
+        padding: 24px;
+        text-align: center;
+        color: var(--ink-soft);
+      }
+      .verb-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        padding: 34px 20px;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+      .verb-v1 {
+        font-family: "Sora", sans-serif;
+        font-weight: 700;
+        font-size: 34px;
+      }
+      .streak-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-family: "Sora", sans-serif;
+        font-weight: 600;
+        font-size: 12.5px;
+        background: var(--amber-soft);
+        color: #8a5a12;
+        padding: 6px 12px;
+        border-radius: 999px;
+        margin-bottom: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app" id="app"></div>
 
-<script>
-/* ================= DATA ================= */
-const T = {
-en:{
-  title:"Grammar Lab", subtitle:"Theory and practice for four key topics",
-  tabTheory:"Theory", tabPractice:"Practice",
-  chooseTopicTheory:"Pick a topic to open its explanation",
-  chooseTopicPractice:"Pick a topic to start practicing",
-  back:"Back",
-  chooseExercise:"Choose an exercise type",
-  questionOf:(n,total)=>`Question ${n} of ${total}`,
-  check:"Check answers", score:"Your score", retry:"Try again",
-  correct:"Correct", incorrect:"Incorrect", why:"Why?",
-  close:"Close", typeAnswer:"Type your answer",
-  backToTypes:"Choose another exercise", backToTopics:"All topics",
-  resultGood:"Great job!", resultOk:"Keep practicing!", of:"out of",
-  topics:{conditionals:"Zero & First Conditionals", tenses:"Past Simple, Continuous, Perfect", relative:"Relative Clauses", passive:"Passive Voice"},
-  exTypes:{quiz:"Test", fill:"Write the answer", choice:"Choose from options"},
-  exDesc:{quiz:"10 multiple-choice questions", fill:"10 questions — type the correct form", choice:"10 questions — pick the right word"},
-  tabVerbs:"Verbs",
-  verbsHomeLabel:"Study the list or play a game",
-  verbsListTitle:"All verbs", verbsGameTitle:"Verb Sprint",
-  verbsListDesc:"Browse and search all irregular verbs", verbsGameDesc:"Type the missing forms against the clock",
-  searchPlaceholder:"Search a verb...",
-  colV1:"Base form", colV2:"Past Simple", colV3:"Past Participle", colMeaning:"Meaning",
-  startGame:"Start game", roundOf:(n,total)=>`Verb ${n} of ${total}`,
-  inputV2:"Past Simple (V2)", inputV3:"Past Participle (V3)",
-  streak:"Streak", yourAnswer:"Your answer", correctAnswer:"Correct answer",
-  next:"Next", finish:"Finish", backToVerbsHome:"Verb menu", playAgain:"Play again",
-},
-ru:{
-  title:"Лаборатория грамматики", subtitle:"Теория и практика по четырём ключевым темам",
-  tabTheory:"Теория", tabPractice:"Практика",
-  chooseTopicTheory:"Выберите тему, чтобы открыть объяснение",
-  chooseTopicPractice:"Выберите тему, чтобы начать практику",
-  back:"Назад",
-  chooseExercise:"Выберите тип упражнения",
-  questionOf:(n,total)=>`Вопрос ${n} из ${total}`,
-  check:"Проверить", score:"Ваш результат", retry:"Попробовать снова",
-  correct:"Верно", incorrect:"Неверно", why:"Почему?",
-  close:"Закрыть", typeAnswer:"Напишите ответ",
-  backToTypes:"Выбрать другое упражнение", backToTopics:"Все темы",
-  resultGood:"Отличная работа!", resultOk:"Продолжай тренироваться!", of:"из",
-  topics:{conditionals:"Zero и First Conditionals", tenses:"Past Simple, Continuous, Perfect", relative:"Relative Clauses", passive:"Passive Voice"},
-  exTypes:{quiz:"Тест", fill:"Напишите ответ", choice:"Выберите вариант"},
-  exDesc:{quiz:"10 вопросов с вариантами ответа", fill:"10 вопросов — впишите правильную форму", choice:"10 вопросов — выберите нужное слово"},
-  tabVerbs:"Глаголы",
-  verbsHomeLabel:"Изучите список или сыграйте в игру",
-  verbsListTitle:"Все глаголы", verbsGameTitle:"Спринт глаголов",
-  verbsListDesc:"Просматривайте и ищите неправильные глаголы", verbsGameDesc:"Впишите нужные формы на скорость",
-  searchPlaceholder:"Найти глагол...",
-  colV1:"Начальная форма", colV2:"Past Simple", colV3:"Past Participle", colMeaning:"Перевод",
-  startGame:"Начать игру", roundOf:(n,total)=>`Глагол ${n} из ${total}`,
-  inputV2:"Past Simple (V2)", inputV3:"Past Participle (V3)",
-  streak:"Серия", yourAnswer:"Ваш ответ", correctAnswer:"Правильный ответ",
-  next:"Далее", finish:"Завершить", backToVerbsHome:"Меню глаголов", playAgain:"Играть снова",
-},
-uz:{
-  title:"Grammatika laboratoriyasi", subtitle:"To'rtta asosiy mavzu bo'yicha nazariya va amaliyot",
-  tabTheory:"Nazariya", tabPractice:"Amaliyot",
-  chooseTopicTheory:"Tushuntirishni ochish uchun mavzuni tanlang",
-  chooseTopicPractice:"Mashq qilishni boshlash uchun mavzuni tanlang",
-  back:"Orqaga",
-  chooseExercise:"Mashq turini tanlang",
-  questionOf:(n,total)=>`${n}-savol, jami ${total}`,
-  check:"Tekshirish", score:"Sizning natijangiz", retry:"Qayta urinish",
-  correct:"To'g'ri", incorrect:"Noto'g'ri", why:"Nega?",
-  close:"Yopish", typeAnswer:"Javobingizni yozing",
-  backToTypes:"Boshqa mashqni tanlash", backToTopics:"Barcha mavzular",
-  resultGood:"Ajoyib natija!", resultOk:"Mashq qilishda davom eting!", of:"dan",
-  topics:{conditionals:"Zero va First Conditionals", tenses:"Past Simple, Continuous, Perfect", relative:"Relative Clauses", passive:"Passive Voice"},
-  exTypes:{quiz:"Test", fill:"Javobni yozing", choice:"Variantni tanlang"},
-  exDesc:{quiz:"10 ta test savoli", fill:"10 ta savol — to'g'ri shaklni yozing", choice:"10 ta savol — kerakli so'zni tanlang"},
-  tabVerbs:"Fe'llar",
-  verbsHomeLabel:"Ro'yxatni o'qing yoki o'yin o'ynang",
-  verbsListTitle:"Barcha fe'llar", verbsGameTitle:"Fe'llar sprinti",
-  verbsListDesc:"Noto'g'ri fe'llarni ko'ring va qidiring", verbsGameDesc:"To'g'ri shakllarni tezlikda yozing",
-  searchPlaceholder:"Fe'lni qidiring...",
-  colV1:"Boshlang'ich shakl", colV2:"Past Simple", colV3:"Past Participle", colMeaning:"Tarjima",
-  startGame:"O'yinni boshlash", roundOf:(n,total)=>`${n}-fe'l, jami ${total}`,
-  inputV2:"Past Simple (V2)", inputV3:"Past Participle (V3)",
-  streak:"Ketma-ketlik", yourAnswer:"Sizning javobingiz", correctAnswer:"To'g'ri javob",
-  next:"Keyingi", finish:"Yakunlash", backToVerbsHome:"Fe'llar menyusi", playAgain:"Qayta o'ynash",
-}
-};
+    <script>
+      /* ================= DATA ================= */
+      const T = {
+        en: {
+          title: "Grammar Lab",
+          subtitle: "Theory and practice for four key topics",
+          tabTheory: "Theory",
+          tabPractice: "Practice",
+          chooseTopicTheory: "Pick a topic to open its explanation",
+          chooseTopicPractice: "Pick a topic to start practicing",
+          back: "Back",
+          chooseExercise: "Choose an exercise type",
+          questionOf: (n, total) => `Question ${n} of ${total}`,
+          check: "Check answers",
+          score: "Your score",
+          retry: "Try again",
+          correct: "Correct",
+          incorrect: "Incorrect",
+          why: "Why?",
+          close: "Close",
+          typeAnswer: "Type your answer",
+          backToTypes: "Choose another exercise",
+          backToTopics: "All topics",
+          resultGood: "Great job!",
+          resultOk: "Keep practicing!",
+          of: "out of",
+          topics: {
+            conditionals: "Zero & First Conditionals",
+            tenses: "Past Simple, Continuous, Perfect",
+            relative: "Relative Clauses",
+            passive: "Passive Voice",
+          },
+          exTypes: {
+            quiz: "Test",
+            fill: "Write the answer",
+            choice: "Choose from options",
+          },
+          exDesc: {
+            quiz: "10 multiple-choice questions",
+            fill: "10 questions — type the correct form",
+            choice: "10 questions — pick the right word",
+          },
+          tabVerbs: "Verbs",
+          verbsHomeLabel: "Study the list or play a game",
+          verbsListTitle: "All verbs",
+          verbsGameTitle: "Verb Sprint",
+          verbsListDesc: "Browse and search all irregular verbs",
+          verbsGameDesc: "Type the missing forms against the clock",
+          searchPlaceholder: "Search a verb...",
+          colV1: "Base form",
+          colV2: "Past Simple",
+          colV3: "Past Participle",
+          colMeaning: "Meaning",
+          startGame: "Start game",
+          roundOf: (n, total) => `Verb ${n} of ${total}`,
+          inputV2: "Past Simple (V2)",
+          inputV3: "Past Participle (V3)",
+          streak: "Streak",
+          yourAnswer: "Your answer",
+          correctAnswer: "Correct answer",
+          next: "Next",
+          finish: "Finish",
+          backToVerbsHome: "Verb menu",
+          playAgain: "Play again",
+        },
+        ru: {
+          title: "Лаборатория грамматики",
+          subtitle: "Теория и практика по четырём ключевым темам",
+          tabTheory: "Теория",
+          tabPractice: "Практика",
+          chooseTopicTheory: "Выберите тему, чтобы открыть объяснение",
+          chooseTopicPractice: "Выберите тему, чтобы начать практику",
+          back: "Назад",
+          chooseExercise: "Выберите тип упражнения",
+          questionOf: (n, total) => `Вопрос ${n} из ${total}`,
+          check: "Проверить",
+          score: "Ваш результат",
+          retry: "Попробовать снова",
+          correct: "Верно",
+          incorrect: "Неверно",
+          why: "Почему?",
+          close: "Закрыть",
+          typeAnswer: "Напишите ответ",
+          backToTypes: "Выбрать другое упражнение",
+          backToTopics: "Все темы",
+          resultGood: "Отличная работа!",
+          resultOk: "Продолжай тренироваться!",
+          of: "из",
+          topics: {
+            conditionals: "Zero и First Conditionals",
+            tenses: "Past Simple, Continuous, Perfect",
+            relative: "Relative Clauses",
+            passive: "Passive Voice",
+          },
+          exTypes: {
+            quiz: "Тест",
+            fill: "Напишите ответ",
+            choice: "Выберите вариант",
+          },
+          exDesc: {
+            quiz: "10 вопросов с вариантами ответа",
+            fill: "10 вопросов — впишите правильную форму",
+            choice: "10 вопросов — выберите нужное слово",
+          },
+          tabVerbs: "Глаголы",
+          verbsHomeLabel: "Изучите список или сыграйте в игру",
+          verbsListTitle: "Все глаголы",
+          verbsGameTitle: "Спринт глаголов",
+          verbsListDesc: "Просматривайте и ищите неправильные глаголы",
+          verbsGameDesc: "Впишите нужные формы на скорость",
+          searchPlaceholder: "Найти глагол...",
+          colV1: "Начальная форма",
+          colV2: "Past Simple",
+          colV3: "Past Participle",
+          colMeaning: "Перевод",
+          startGame: "Начать игру",
+          roundOf: (n, total) => `Глагол ${n} из ${total}`,
+          inputV2: "Past Simple (V2)",
+          inputV3: "Past Participle (V3)",
+          streak: "Серия",
+          yourAnswer: "Ваш ответ",
+          correctAnswer: "Правильный ответ",
+          next: "Далее",
+          finish: "Завершить",
+          backToVerbsHome: "Меню глаголов",
+          playAgain: "Играть снова",
+        },
+        uz: {
+          title: "Grammatika laboratoriyasi",
+          subtitle: "To'rtta asosiy mavzu bo'yicha nazariya va amaliyot",
+          tabTheory: "Nazariya",
+          tabPractice: "Amaliyot",
+          chooseTopicTheory: "Tushuntirishni ochish uchun mavzuni tanlang",
+          chooseTopicPractice: "Mashq qilishni boshlash uchun mavzuni tanlang",
+          back: "Orqaga",
+          chooseExercise: "Mashq turini tanlang",
+          questionOf: (n, total) => `${n}-savol, jami ${total}`,
+          check: "Tekshirish",
+          score: "Sizning natijangiz",
+          retry: "Qayta urinish",
+          correct: "To'g'ri",
+          incorrect: "Noto'g'ri",
+          why: "Nega?",
+          close: "Yopish",
+          typeAnswer: "Javobingizni yozing",
+          backToTypes: "Boshqa mashqni tanlash",
+          backToTopics: "Barcha mavzular",
+          resultGood: "Ajoyib natija!",
+          resultOk: "Mashq qilishda davom eting!",
+          of: "dan",
+          topics: {
+            conditionals: "Zero va First Conditionals",
+            tenses: "Past Simple, Continuous, Perfect",
+            relative: "Relative Clauses",
+            passive: "Passive Voice",
+          },
+          exTypes: {
+            quiz: "Test",
+            fill: "Javobni yozing",
+            choice: "Variantni tanlang",
+          },
+          exDesc: {
+            quiz: "10 ta test savoli",
+            fill: "10 ta savol — to'g'ri shaklni yozing",
+            choice: "10 ta savol — kerakli so'zni tanlang",
+          },
+          tabVerbs: "Fe'llar",
+          verbsHomeLabel: "Ro'yxatni o'qing yoki o'yin o'ynang",
+          verbsListTitle: "Barcha fe'llar",
+          verbsGameTitle: "Fe'llar sprinti",
+          verbsListDesc: "Noto'g'ri fe'llarni ko'ring va qidiring",
+          verbsGameDesc: "To'g'ri shakllarni tezlikda yozing",
+          searchPlaceholder: "Fe'lni qidiring...",
+          colV1: "Boshlang'ich shakl",
+          colV2: "Past Simple",
+          colV3: "Past Participle",
+          colMeaning: "Tarjima",
+          startGame: "O'yinni boshlash",
+          roundOf: (n, total) => `${n}-fe'l, jami ${total}`,
+          inputV2: "Past Simple (V2)",
+          inputV3: "Past Participle (V3)",
+          streak: "Ketma-ketlik",
+          yourAnswer: "Sizning javobingiz",
+          correctAnswer: "To'g'ri javob",
+          next: "Keyingi",
+          finish: "Yakunlash",
+          backToVerbsHome: "Fe'llar menyusi",
+          playAgain: "Qayta o'ynash",
+        },
+      };
 
-const TOPIC_ORDER = ["conditionals","tenses","relative","passive"];
-const TOPIC_CLASS = {conditionals:"t0",tenses:"t1",relative:"t2",passive:"t3"};
-const TOPIC_LETTER = {conditionals:"Z/1",tenses:"P",relative:"R",passive:"V"};
+      const TOPIC_ORDER = ["conditionals", "tenses", "relative", "passive"];
+      const TOPIC_CLASS = {
+        conditionals: "t0",
+        tenses: "t1",
+        relative: "t2",
+        passive: "t3",
+      };
+      const TOPIC_LETTER = {
+        conditionals: "Z/1",
+        tenses: "P",
+        relative: "R",
+        passive: "V",
+      };
 
-const THEORY = {
-conditionals:{
-en:[
- {k:"text",v:"Zero Conditional talks about things that are always true — facts, science, general truths. Formula: If + Present Simple, ... Present Simple."},
- {k:"example",v:"If you heat water to 100°C, it boils."},
- {k:"example",v:"If you don't water plants, they die."},
- {k:"text",v:"First Conditional talks about a real, possible situation in the future. Formula: If + Present Simple, ... will + verb."},
- {k:"example",v:"If it rains tomorrow, I will stay home."},
- {k:"example",v:"If you study hard, you will pass the exam."},
- {k:"text",v:"The difference: Zero Conditional is always true, no matter who or when. First Conditional is about one specific possible future."},
-],
-ru:[
- {k:"text",v:"Zero Conditional используется для фактов и законов природы — того, что всегда истинно. Формула: If + Present Simple, ... Present Simple."},
- {k:"example",v:"If you heat water to 100°C, it boils. (Если нагреть воду до 100°C, она закипает.)"},
- {k:"example",v:"If you don't water plants, they die. (Если не поливать растения, они умирают.)"},
- {k:"text",v:"First Conditional используется для реальных возможных ситуаций в будущем. Формула: If + Present Simple, ... will + verb."},
- {k:"example",v:"If it rains tomorrow, I will stay home. (Если завтра пойдёт дождь, я останусь дома.)"},
- {k:"example",v:"If you study hard, you will pass the exam. (Если будешь усердно учиться, сдашь экзамен.)"},
- {k:"text",v:"Разница: Zero Conditional — всегда верно, вне зависимости от времени. First Conditional — про одну конкретную возможную ситуацию в будущем."},
-],
-uz:[
- {k:"text",v:"Zero Conditional har doim to'g'ri bo'lgan faktlar va tabiat qonunlari uchun ishlatiladi. Formula: If + Present Simple, ... Present Simple."},
- {k:"example",v:"If you heat water to 100°C, it boils. (Agar suvni 100°C gacha qizdirsangiz, u qaynaydi.)"},
- {k:"example",v:"If you don't water plants, they die. (Agar o'simliklarni sug'ormasangiz, ular qurib qoladi.)"},
- {k:"text",v:"First Conditional kelajakda bo'lishi mumkin bo'lgan real vaziyatlar uchun ishlatiladi. Formula: If + Present Simple, ... will + verb."},
- {k:"example",v:"If it rains tomorrow, I will stay home. (Agar ertaga yomg'ir yog'sa, men uyda qolaman.)"},
- {k:"example",v:"If you study hard, you will pass the exam. (Agar qattiq shug'ullansangiz, imtihondan o'tasiz.)"},
- {k:"text",v:"Farqi: Zero Conditional — hech qanday holatga bog'liq bo'lmagan doimiy haqiqat. First Conditional — kelajakdagi bitta aniq mumkin bo'lgan vaziyat haqida."},
-]},
-tenses:{
-en:[
- {k:"text",v:"Past Simple describes a completed action at a specific time in the past."},
- {k:"example",v:"I ate breakfast at 7 am. / She went to Paris last year."},
- {k:"text",v:"Past Continuous describes an action in progress at a moment in the past, often as background for another action, or with 'while'."},
- {k:"example",v:"I was eating breakfast at 7 am. / While I was cooking, she was cleaning."},
- {k:"text",v:"Past Perfect describes an action that finished before another moment in the past — 'the past of the past'."},
- {k:"example",v:"I had eaten breakfast before she arrived. / When I arrived, she had already left."},
- {k:"text",v:"Signal words already, before, by the time, just, never usually point to Past Perfect. 'While' usually points to Past Continuous."},
-],
-ru:[
- {k:"text",v:"Past Simple — законченное действие в конкретный момент прошлого."},
- {k:"example",v:"I ate breakfast at 7 am. (Я позавтракал в 7 утра.)"},
- {k:"text",v:"Past Continuous — действие было в процессе в определённый момент прошлого, часто как фон для другого события или со словом 'while'."},
- {k:"example",v:"While I was cooking, she was cleaning. (Пока я готовил, она убирала.)"},
- {k:"text",v:"Past Perfect — действие завершилось ДО другого момента в прошлом — 'прошлое в прошлом'."},
- {k:"example",v:"When I arrived, she had already left. (Когда я пришёл, она уже ушла.)"},
- {k:"text",v:"Слова-сигналы already, before, by the time, just, never обычно указывают на Past Perfect. 'While' обычно указывает на Past Continuous."},
-],
-uz:[
- {k:"text",v:"Past Simple — o'tmishda muayyan paytda tugallangan harakatni bildiradi."},
- {k:"example",v:"I ate breakfast at 7 am. (Men soat 7 da nonushta qildim.)"},
- {k:"text",v:"Past Continuous — o'tmishning muayyan pallasida davom etayotgan harakatni, ko'pincha boshqa harakat uchun fon sifatida yoki 'while' bilan bildiradi."},
- {k:"example",v:"While I was cooking, she was cleaning. (Men ovqat pishirayotganimda, u tozalayotgan edi.)"},
- {k:"text",v:"Past Perfect — o'tmishdagi boshqa bir paytdan OLDIN tugagan harakatni bildiradi — 'o'tmishning o'tmishi'."},
- {k:"example",v:"When I arrived, she had already left. (Men kelganimda, u allaqachon ketib bo'lgan edi.)"},
- {k:"text",v:"Already, before, by the time, just, never so'zlari odatda Past Perfect'ga ishora qiladi. 'While' esa odatda Past Continuous'ga ishora qiladi."},
-]},
-relative:{
-en:[
- {k:"text",v:"Relative clauses add information about a noun without starting a new sentence. who/whom = people, which = things, whose = possession, where = places, when = time, why = reason, that = people or things (informal)."},
- {k:"example",v:"The man who called you is my boss. / This is the book which I bought yesterday."},
- {k:"text",v:"Defining clauses (no commas) give essential information. Non-defining clauses (with commas) give extra information and never use 'that'."},
- {k:"example",v:"The woman who lives next door is a doctor. (defining) / My sister, who lives in London, is visiting us. (non-defining)"},
- {k:"text",v:"In defining clauses, the object pronoun can often be left out."},
- {k:"example",v:"The book (which/that) I read was boring."},
-],
-ru:[
- {k:"text",v:"Relative Clauses добавляют информацию о существительном без нового предложения. who/whom — люди, which — вещи, whose — принадлежность, where — место, when — время, why — причина, that — люди и вещи (неформально)."},
- {k:"example",v:"The man who called you is my boss. (Мужчина, который тебе звонил — мой начальник.)"},
- {k:"text",v:"Defining clauses (без запятых) — необходимая информация. Non-defining (с запятыми) — дополнительная информация, 'that' не используется."},
- {k:"example",v:"My sister, who lives in London, is visiting us. (Моя сестра, которая живёт в Лондоне, приезжает к нам.)"},
- {k:"text",v:"В defining clauses местоимение-дополнение часто можно опустить."},
- {k:"example",v:"The book (which/that) I read was boring. (Книга, которую я читал, была скучной.)"},
-],
-uz:[
- {k:"text",v:"Nisbiy ergash gaplar yangi gap boshlamasdan ot haqida qo'shimcha ma'lumot beradi. who/whom — odamlar, which — narsalar, whose — egalik, where — joy, when — vaqt, why — sabab, that — odamlar va narsalar (norasmiy)."},
- {k:"example",v:"The man who called you is my boss. (Sizga qo'ng'iroq qilgan odam mening boshlig'im.)"},
- {k:"text",v:"Defining (vergulsiz) — zarur ma'lumot. Non-defining (vergul bilan) — qo'shimcha ma'lumot, 'that' ishlatilmaydi."},
- {k:"example",v:"My sister, who lives in London, is visiting us. (Londonda yashaydigan opam bizga mehmonga kelmoqda.)"},
- {k:"text",v:"Defining gaplarda to'ldiruvchi olmoshni ko'pincha tushirib qoldirish mumkin."},
- {k:"example",v:"The book (which/that) I read was boring. (Men o'qigan kitob zerikarli edi.)"},
-]},
-passive:{
-en:[
- {k:"text",v:"Passive Voice is used when the action or the receiver of the action is more important than who did it. Formula: to be + V3 (past participle)."},
- {k:"example",v:"The letter was written by John. / This house was built in 1990."},
- {k:"text",v:"The passive form must match the tense of the original active sentence — present, past, perfect, or future."},
- {k:"example",v:"The report has been completed. / The bridge will be built next year."},
- {k:"text",v:"'By + agent' is added only when it's important to say who performed the action."},
-],
-ru:[
- {k:"text",v:"Passive Voice используется, когда действие или объект важнее, чем тот, кто его совершил. Формула: to be + V3."},
- {k:"example",v:"The letter was written by John. (Письмо было написано Джоном.)"},
- {k:"text",v:"Форма пассива должна соответствовать времени исходного активного предложения — настоящему, прошедшему, перфектному или будущему."},
- {k:"example",v:"The bridge will be built next year. (Мост будет построен в следующем году.)"},
- {k:"text",v:"'By + деятель' добавляется, только когда важно указать, кто выполнил действие."},
-],
-uz:[
- {k:"text",v:"Majhul nisbat (Passive Voice) harakatni bajaruvchidan ko'ra harakat yoki uning natijasi muhimroq bo'lganda ishlatiladi. Formula: to be + V3."},
- {k:"example",v:"The letter was written by John. (Xat Jon tomonidan yozilgan.)"},
- {k:"text",v:"Majhul shakl asl faol gapning zamoniga mos kelishi kerak — hozirgi, o'tgan, perfekt yoki kelasi zamon."},
- {k:"example",v:"The bridge will be built next year. (Ko'prik kelasi yili quriladi.)"},
- {k:"text",v:"'By + bajaruvchi' faqat kim bajargani muhim bo'lganda qo'shiladi."},
-]}
-};
+      const THEORY = {
+        conditionals: {
+          en: [
+            {
+              k: "text",
+              v: "Zero Conditional talks about things that are always true — facts, science, general truths. Formula: If + Present Simple, ... Present Simple.",
+            },
+            { k: "example", v: "If you heat water to 100°C, it boils." },
+            { k: "example", v: "If you don't water plants, they die." },
+            {
+              k: "text",
+              v: "First Conditional talks about a real, possible situation in the future. Formula: If + Present Simple, ... will + verb.",
+            },
+            { k: "example", v: "If it rains tomorrow, I will stay home." },
+            { k: "example", v: "If you study hard, you will pass the exam." },
+            {
+              k: "text",
+              v: "The difference: Zero Conditional is always true, no matter who or when. First Conditional is about one specific possible future.",
+            },
+          ],
+          ru: [
+            {
+              k: "text",
+              v: "Zero Conditional используется для фактов и законов природы — того, что всегда истинно. Формула: If + Present Simple, ... Present Simple.",
+            },
+            {
+              k: "example",
+              v: "If you heat water to 100°C, it boils. (Если нагреть воду до 100°C, она закипает.)",
+            },
+            {
+              k: "example",
+              v: "If you don't water plants, they die. (Если не поливать растения, они умирают.)",
+            },
+            {
+              k: "text",
+              v: "First Conditional используется для реальных возможных ситуаций в будущем. Формула: If + Present Simple, ... will + verb.",
+            },
+            {
+              k: "example",
+              v: "If it rains tomorrow, I will stay home. (Если завтра пойдёт дождь, я останусь дома.)",
+            },
+            {
+              k: "example",
+              v: "If you study hard, you will pass the exam. (Если будешь усердно учиться, сдашь экзамен.)",
+            },
+            {
+              k: "text",
+              v: "Разница: Zero Conditional — всегда верно, вне зависимости от времени. First Conditional — про одну конкретную возможную ситуацию в будущем.",
+            },
+          ],
+          uz: [
+            {
+              k: "text",
+              v: "Zero Conditional har doim to'g'ri bo'lgan faktlar va tabiat qonunlari uchun ishlatiladi. Formula: If + Present Simple, ... Present Simple.",
+            },
+            {
+              k: "example",
+              v: "If you heat water to 100°C, it boils. (Agar suvni 100°C gacha qizdirsangiz, u qaynaydi.)",
+            },
+            {
+              k: "example",
+              v: "If you don't water plants, they die. (Agar o'simliklarni sug'ormasangiz, ular qurib qoladi.)",
+            },
+            {
+              k: "text",
+              v: "First Conditional kelajakda bo'lishi mumkin bo'lgan real vaziyatlar uchun ishlatiladi. Formula: If + Present Simple, ... will + verb.",
+            },
+            {
+              k: "example",
+              v: "If it rains tomorrow, I will stay home. (Agar ertaga yomg'ir yog'sa, men uyda qolaman.)",
+            },
+            {
+              k: "example",
+              v: "If you study hard, you will pass the exam. (Agar qattiq shug'ullansangiz, imtihondan o'tasiz.)",
+            },
+            {
+              k: "text",
+              v: "Farqi: Zero Conditional — hech qanday holatga bog'liq bo'lmagan doimiy haqiqat. First Conditional — kelajakdagi bitta aniq mumkin bo'lgan vaziyat haqida.",
+            },
+          ],
+        },
+        tenses: {
+          en: [
+            {
+              k: "text",
+              v: "Past Simple describes a completed action at a specific time in the past.",
+            },
+            {
+              k: "example",
+              v: "I ate breakfast at 7 am. / She went to Paris last year.",
+            },
+            {
+              k: "text",
+              v: "Past Continuous describes an action in progress at a moment in the past, often as background for another action, or with 'while'.",
+            },
+            {
+              k: "example",
+              v: "I was eating breakfast at 7 am. / While I was cooking, she was cleaning.",
+            },
+            {
+              k: "text",
+              v: "Past Perfect describes an action that finished before another moment in the past — 'the past of the past'.",
+            },
+            {
+              k: "example",
+              v: "I had eaten breakfast before she arrived. / When I arrived, she had already left.",
+            },
+            {
+              k: "text",
+              v: "Signal words already, before, by the time, just, never usually point to Past Perfect. 'While' usually points to Past Continuous.",
+            },
+          ],
+          ru: [
+            {
+              k: "text",
+              v: "Past Simple — законченное действие в конкретный момент прошлого.",
+            },
+            {
+              k: "example",
+              v: "I ate breakfast at 7 am. (Я позавтракал в 7 утра.)",
+            },
+            {
+              k: "text",
+              v: "Past Continuous — действие было в процессе в определённый момент прошлого, часто как фон для другого события или со словом 'while'.",
+            },
+            {
+              k: "example",
+              v: "While I was cooking, she was cleaning. (Пока я готовил, она убирала.)",
+            },
+            {
+              k: "text",
+              v: "Past Perfect — действие завершилось ДО другого момента в прошлом — 'прошлое в прошлом'.",
+            },
+            {
+              k: "example",
+              v: "When I arrived, she had already left. (Когда я пришёл, она уже ушла.)",
+            },
+            {
+              k: "text",
+              v: "Слова-сигналы already, before, by the time, just, never обычно указывают на Past Perfect. 'While' обычно указывает на Past Continuous.",
+            },
+          ],
+          uz: [
+            {
+              k: "text",
+              v: "Past Simple — o'tmishda muayyan paytda tugallangan harakatni bildiradi.",
+            },
+            {
+              k: "example",
+              v: "I ate breakfast at 7 am. (Men soat 7 da nonushta qildim.)",
+            },
+            {
+              k: "text",
+              v: "Past Continuous — o'tmishning muayyan pallasida davom etayotgan harakatni, ko'pincha boshqa harakat uchun fon sifatida yoki 'while' bilan bildiradi.",
+            },
+            {
+              k: "example",
+              v: "While I was cooking, she was cleaning. (Men ovqat pishirayotganimda, u tozalayotgan edi.)",
+            },
+            {
+              k: "text",
+              v: "Past Perfect — o'tmishdagi boshqa bir paytdan OLDIN tugagan harakatni bildiradi — 'o'tmishning o'tmishi'.",
+            },
+            {
+              k: "example",
+              v: "When I arrived, she had already left. (Men kelganimda, u allaqachon ketib bo'lgan edi.)",
+            },
+            {
+              k: "text",
+              v: "Already, before, by the time, just, never so'zlari odatda Past Perfect'ga ishora qiladi. 'While' esa odatda Past Continuous'ga ishora qiladi.",
+            },
+          ],
+        },
+        relative: {
+          en: [
+            {
+              k: "text",
+              v: "Relative clauses add information about a noun without starting a new sentence. who/whom = people, which = things, whose = possession, where = places, when = time, why = reason, that = people or things (informal).",
+            },
+            {
+              k: "example",
+              v: "The man who called you is my boss. / This is the book which I bought yesterday.",
+            },
+            {
+              k: "text",
+              v: "Defining clauses (no commas) give essential information. Non-defining clauses (with commas) give extra information and never use 'that'.",
+            },
+            {
+              k: "example",
+              v: "The woman who lives next door is a doctor. (defining) / My sister, who lives in London, is visiting us. (non-defining)",
+            },
+            {
+              k: "text",
+              v: "In defining clauses, the object pronoun can often be left out.",
+            },
+            { k: "example", v: "The book (which/that) I read was boring." },
+          ],
+          ru: [
+            {
+              k: "text",
+              v: "Relative Clauses добавляют информацию о существительном без нового предложения. who/whom — люди, which — вещи, whose — принадлежность, where — место, when — время, why — причина, that — люди и вещи (неформально).",
+            },
+            {
+              k: "example",
+              v: "The man who called you is my boss. (Мужчина, который тебе звонил — мой начальник.)",
+            },
+            {
+              k: "text",
+              v: "Defining clauses (без запятых) — необходимая информация. Non-defining (с запятыми) — дополнительная информация, 'that' не используется.",
+            },
+            {
+              k: "example",
+              v: "My sister, who lives in London, is visiting us. (Моя сестра, которая живёт в Лондоне, приезжает к нам.)",
+            },
+            {
+              k: "text",
+              v: "В defining clauses местоимение-дополнение часто можно опустить.",
+            },
+            {
+              k: "example",
+              v: "The book (which/that) I read was boring. (Книга, которую я читал, была скучной.)",
+            },
+          ],
+          uz: [
+            {
+              k: "text",
+              v: "Nisbiy ergash gaplar yangi gap boshlamasdan ot haqida qo'shimcha ma'lumot beradi. who/whom — odamlar, which — narsalar, whose — egalik, where — joy, when — vaqt, why — sabab, that — odamlar va narsalar (norasmiy).",
+            },
+            {
+              k: "example",
+              v: "The man who called you is my boss. (Sizga qo'ng'iroq qilgan odam mening boshlig'im.)",
+            },
+            {
+              k: "text",
+              v: "Defining (vergulsiz) — zarur ma'lumot. Non-defining (vergul bilan) — qo'shimcha ma'lumot, 'that' ishlatilmaydi.",
+            },
+            {
+              k: "example",
+              v: "My sister, who lives in London, is visiting us. (Londonda yashaydigan opam bizga mehmonga kelmoqda.)",
+            },
+            {
+              k: "text",
+              v: "Defining gaplarda to'ldiruvchi olmoshni ko'pincha tushirib qoldirish mumkin.",
+            },
+            {
+              k: "example",
+              v: "The book (which/that) I read was boring. (Men o'qigan kitob zerikarli edi.)",
+            },
+          ],
+        },
+        passive: {
+          en: [
+            {
+              k: "text",
+              v: "Passive Voice is used when the action or the receiver of the action is more important than who did it. Formula: to be + V3 (past participle).",
+            },
+            {
+              k: "example",
+              v: "The letter was written by John. / This house was built in 1990.",
+            },
+            {
+              k: "text",
+              v: "The passive form must match the tense of the original active sentence — present, past, perfect, or future.",
+            },
+            {
+              k: "example",
+              v: "The report has been completed. / The bridge will be built next year.",
+            },
+            {
+              k: "text",
+              v: "'By + agent' is added only when it's important to say who performed the action.",
+            },
+          ],
+          ru: [
+            {
+              k: "text",
+              v: "Passive Voice используется, когда действие или объект важнее, чем тот, кто его совершил. Формула: to be + V3.",
+            },
+            {
+              k: "example",
+              v: "The letter was written by John. (Письмо было написано Джоном.)",
+            },
+            {
+              k: "text",
+              v: "Форма пассива должна соответствовать времени исходного активного предложения — настоящему, прошедшему, перфектному или будущему.",
+            },
+            {
+              k: "example",
+              v: "The bridge will be built next year. (Мост будет построен в следующем году.)",
+            },
+            {
+              k: "text",
+              v: "'By + деятель' добавляется, только когда важно указать, кто выполнил действие.",
+            },
+          ],
+          uz: [
+            {
+              k: "text",
+              v: "Majhul nisbat (Passive Voice) harakatni bajaruvchidan ko'ra harakat yoki uning natijasi muhimroq bo'lganda ishlatiladi. Formula: to be + V3.",
+            },
+            {
+              k: "example",
+              v: "The letter was written by John. (Xat Jon tomonidan yozilgan.)",
+            },
+            {
+              k: "text",
+              v: "Majhul shakl asl faol gapning zamoniga mos kelishi kerak — hozirgi, o'tgan, perfekt yoki kelasi zamon.",
+            },
+            {
+              k: "example",
+              v: "The bridge will be built next year. (Ko'prik kelasi yili quriladi.)",
+            },
+            {
+              k: "text",
+              v: "'By + bajaruvchi' faqat kim bajargani muhim bo'lganda qo'shiladi.",
+            },
+          ],
+        },
+      };
 
-const RULES = {
-conditionals:{
- zero:{en:"Zero Conditional is used for facts that are always true. Structure: If + Present Simple, ... Present Simple.",
-       ru:"Zero Conditional используется для фактов, которые всегда верны. Структура: If + Present Simple, ... Present Simple.",
-       uz:"Zero Conditional har doim to'g'ri bo'lgan faktlar uchun ishlatiladi. Tuzilishi: If + Present Simple, ... Present Simple."},
- first:{en:"First Conditional is used for a real possible situation in the future. Structure: If + Present Simple, ... will + verb.",
-       ru:"First Conditional используется для реальной возможной ситуации в будущем. Структура: If + Present Simple, ... will + verb.",
-       uz:"First Conditional kelajakda bo'lishi mumkin bo'lgan real vaziyat uchun ishlatiladi. Tuzilishi: If + Present Simple, ... will + verb."},
-},
-tenses:{
- simple:{en:"Past Simple is used for a completed action at a specific time in the past.",
-        ru:"Past Simple используется для законченного действия в конкретный момент прошлого.",
-        uz:"Past Simple o'tmishda muayyan paytda tugagan harakat uchun ishlatiladi."},
- continuous:{en:"Past Continuous describes an action in progress at a past moment, often used with 'while' or interrupted by another action.",
-        ru:"Past Continuous описывает действие в процессе в прошлом, часто используется с 'while' или прерывается другим действием.",
-        uz:"Past Continuous o'tmishdagi jarayondagi harakatni bildiradi, ko'pincha 'while' bilan yoki boshqa harakat uni to'xtatganda ishlatiladi."},
- perfectSignal:{en:"Past Perfect shows an action that happened before another past action. Signal words: already, before, by the time, just, never.",
-        ru:"Past Perfect показывает действие, которое произошло раньше другого действия в прошлом. Слова-сигналы: already, before, by the time, just, never.",
-        uz:"Past Perfect boshqa o'tgan harakatdan OLDIN sodir bo'lgan harakatni ko'rsatadi. Signal so'zlar: already, before, by the time, just, never."},
- sequenceWhen:{en:"With 'when', the tense shows the order of events: Past Simple = one after another; Past Perfect = the first one already happened.",
-        ru:"С 'when' время показывает порядок событий: Past Simple = одно за другим; Past Perfect = первое уже произошло.",
-        uz:"'When' bilan zamon voqealar tartibini ko'rsatadi: Past Simple = biri-biridan keyin; Past Perfect = birinchisi allaqachon sodir bo'lgan."},
-},
-relative:{
- defining:{en:"A defining clause gives essential information about the noun and uses no commas.",
-        ru:"Defining clause даёт необходимую информацию о существительном и пишется без запятых.",
-        uz:"Defining clause ot haqida zarur ma'lumot beradi va vergulsiz yoziladi."},
- nonDefining:{en:"A non-defining clause gives extra, non-essential information, is separated by commas, and never uses 'that'.",
-        ru:"Non-defining clause даёт дополнительную информацию, выделяется запятыми и никогда не использует 'that'.",
-        uz:"Non-defining clause qo'shimcha ma'lumot beradi, vergul bilan ajratiladi va hech qachon 'that' ishlatilmaydi."},
- pronounChoice:{en:"Choose the pronoun by what it refers to: who/that = people, which/that = things, whose = possession, where = place, when = time, why = reason.",
-        ru:"Выбирай местоимение по тому, к чему оно относится: who/that — люди, which/that — вещи, whose — принадлежность, where — место, when — время, why — причина.",
-        uz:"Olmoshni nimaga tegishli ekaniga qarab tanlang: who/that — odamlar, which/that — narsalar, whose — egalik, where — joy, when — vaqt, why — sabab."},
- omit:{en:"When the relative pronoun is the object of the clause, it can often be left out.",
-        ru:"Когда относительное местоимение является дополнением, его часто можно опустить.",
-        uz:"Nisbiy olmosh gapning to'ldiruvchisi bo'lsa, ko'pincha uni tushirib qoldirish mumkin."},
-},
-passive:{
- formation:{en:"Passive Voice is formed with to be + past participle (V3), focusing on the action or its receiver.",
-        ru:"Passive Voice образуется как to be + V3, фокус на действии или его получателе.",
-        uz:"Passive Voice to be + V3 orqali hosil bo'ladi, harakat yoki uning qabul qiluvchisiga urg'u beriladi."},
- tenseMatch:{en:"The passive form must match the tense of the original active sentence.",
-        ru:"Форма пассива должна соответствовать времени исходного активного предложения.",
-        uz:"Majhul shakl asl faol gapning zamoniga mos kelishi kerak."},
- byAgent:{en:"'By + agent' is added only when it matters who performed the action.",
-        ru:"'By + деятель' добавляется только тогда, когда важно, кто совершил действие.",
-        uz:"'By + bajaruvchi' faqat kim bajargani muhim bo'lganda qo'shiladi."},
-}
-};
+      const RULES = {
+        conditionals: {
+          zero: {
+            en: "Zero Conditional is used for facts that are always true. Structure: If + Present Simple, ... Present Simple.",
+            ru: "Zero Conditional используется для фактов, которые всегда верны. Структура: If + Present Simple, ... Present Simple.",
+            uz: "Zero Conditional har doim to'g'ri bo'lgan faktlar uchun ishlatiladi. Tuzilishi: If + Present Simple, ... Present Simple.",
+          },
+          first: {
+            en: "First Conditional is used for a real possible situation in the future. Structure: If + Present Simple, ... will + verb.",
+            ru: "First Conditional используется для реальной возможной ситуации в будущем. Структура: If + Present Simple, ... will + verb.",
+            uz: "First Conditional kelajakda bo'lishi mumkin bo'lgan real vaziyat uchun ishlatiladi. Tuzilishi: If + Present Simple, ... will + verb.",
+          },
+        },
+        tenses: {
+          simple: {
+            en: "Past Simple is used for a completed action at a specific time in the past.",
+            ru: "Past Simple используется для законченного действия в конкретный момент прошлого.",
+            uz: "Past Simple o'tmishda muayyan paytda tugagan harakat uchun ishlatiladi.",
+          },
+          continuous: {
+            en: "Past Continuous describes an action in progress at a past moment, often used with 'while' or interrupted by another action.",
+            ru: "Past Continuous описывает действие в процессе в прошлом, часто используется с 'while' или прерывается другим действием.",
+            uz: "Past Continuous o'tmishdagi jarayondagi harakatni bildiradi, ko'pincha 'while' bilan yoki boshqa harakat uni to'xtatganda ishlatiladi.",
+          },
+          perfectSignal: {
+            en: "Past Perfect shows an action that happened before another past action. Signal words: already, before, by the time, just, never.",
+            ru: "Past Perfect показывает действие, которое произошло раньше другого действия в прошлом. Слова-сигналы: already, before, by the time, just, never.",
+            uz: "Past Perfect boshqa o'tgan harakatdan OLDIN sodir bo'lgan harakatni ko'rsatadi. Signal so'zlar: already, before, by the time, just, never.",
+          },
+          sequenceWhen: {
+            en: "With 'when', the tense shows the order of events: Past Simple = one after another; Past Perfect = the first one already happened.",
+            ru: "С 'when' время показывает порядок событий: Past Simple = одно за другим; Past Perfect = первое уже произошло.",
+            uz: "'When' bilan zamon voqealar tartibini ko'rsatadi: Past Simple = biri-biridan keyin; Past Perfect = birinchisi allaqachon sodir bo'lgan.",
+          },
+        },
+        relative: {
+          defining: {
+            en: "A defining clause gives essential information about the noun and uses no commas.",
+            ru: "Defining clause даёт необходимую информацию о существительном и пишется без запятых.",
+            uz: "Defining clause ot haqida zarur ma'lumot beradi va vergulsiz yoziladi.",
+          },
+          nonDefining: {
+            en: "A non-defining clause gives extra, non-essential information, is separated by commas, and never uses 'that'.",
+            ru: "Non-defining clause даёт дополнительную информацию, выделяется запятыми и никогда не использует 'that'.",
+            uz: "Non-defining clause qo'shimcha ma'lumot beradi, vergul bilan ajratiladi va hech qachon 'that' ishlatilmaydi.",
+          },
+          pronounChoice: {
+            en: "Choose the pronoun by what it refers to: who/that = people, which/that = things, whose = possession, where = place, when = time, why = reason.",
+            ru: "Выбирай местоимение по тому, к чему оно относится: who/that — люди, which/that — вещи, whose — принадлежность, where — место, when — время, why — причина.",
+            uz: "Olmoshni nimaga tegishli ekaniga qarab tanlang: who/that — odamlar, which/that — narsalar, whose — egalik, where — joy, when — vaqt, why — sabab.",
+          },
+          omit: {
+            en: "When the relative pronoun is the object of the clause, it can often be left out.",
+            ru: "Когда относительное местоимение является дополнением, его часто можно опустить.",
+            uz: "Nisbiy olmosh gapning to'ldiruvchisi bo'lsa, ko'pincha uni tushirib qoldirish mumkin.",
+          },
+        },
+        passive: {
+          formation: {
+            en: "Passive Voice is formed with to be + past participle (V3), focusing on the action or its receiver.",
+            ru: "Passive Voice образуется как to be + V3, фокус на действии или его получателе.",
+            uz: "Passive Voice to be + V3 orqali hosil bo'ladi, harakat yoki uning qabul qiluvchisiga urg'u beriladi.",
+          },
+          tenseMatch: {
+            en: "The passive form must match the tense of the original active sentence.",
+            ru: "Форма пассива должна соответствовать времени исходного активного предложения.",
+            uz: "Majhul shakl asl faol gapning zamoniga mos kelishi kerak.",
+          },
+          byAgent: {
+            en: "'By + agent' is added only when it matters who performed the action.",
+            ru: "'By + деятель' добавляется только тогда, когда важно, кто совершил действие.",
+            uz: "'By + bajaruvchi' faqat kim bajargani muhim bo'lganda qo'shiladi.",
+          },
+        },
+      };
 
-/* Each exercise item: {q:"sentence with ___", type:quiz/choice -> options+correct index, fill -> accept[] }
+      /* Each exercise item: {q:"sentence with ___", type:quiz/choice -> options+correct index, fill -> accept[] }
    rule: key into RULES[topic] */
-const EX = {
-conditionals:{
- quiz:[
-  {q:"If you ___ ice, it melts.",options:["heat","heats","heated","will heat"],correct:0,rule:"zero"},
-  {q:"If water reaches 0°C, it ___.",options:["freeze","freezes","froze","will freeze"],correct:1,rule:"zero"},
-  {q:"If it rains tomorrow, we ___ home.",options:["stay","stays","stayed","will stay"],correct:3,rule:"first"},
-  {q:"If you don't study, you ___ the exam.",options:["fail","fails","failed","will fail"],correct:3,rule:"first"},
-  {q:"If you mix yellow and blue, you ___ green.",options:["get","gets","got","will get"],correct:0,rule:"zero"},
-  {q:"If she has free time, she ___ you tomorrow.",options:["call","calls","called","will call"],correct:3,rule:"first"},
-  {q:"Plants die if they ___ water.",options:["don't get","doesn't get","didn't get","won't get"],correct:0,rule:"zero"},
-  {q:"If I finish work early, I ___ to the gym tonight.",options:["go","goes","went","will go"],correct:3,rule:"first"},
-  {q:"Ice ___ if you heat it.",options:["melt","melts","melted","will melt"],correct:1,rule:"zero"},
-  {q:"If they don't hurry, they ___ the train.",options:["miss","misses","missed","will miss"],correct:3,rule:"first"},
- ],
- fill:[
-  {q:"If you heat ice, it ___ (melt).",accept:["melts"],rule:"zero"},
-  {q:"If it rains, the ground ___ (get) wet.",accept:["gets"],rule:"zero"},
-  {q:"If she studies hard, she ___ (pass) the exam.",accept:["will pass"],rule:"first"},
-  {q:"If we don't leave now, we ___ (be) late.",accept:["will be"],rule:"first"},
-  {q:"If you touch fire, you ___ (get) burned.",accept:["get"],rule:"zero"},
-  {q:"If it is sunny tomorrow, we ___ (go) to the beach.",accept:["will go"],rule:"first"},
-  {q:"Water ___ (boil) if you heat it to 100°C.",accept:["boils"],rule:"zero"},
-  {q:"If he doesn't call, I ___ (worry).",accept:["will worry"],rule:"first"},
-  {q:"If you don't water plants, they ___ (die).",accept:["die"],rule:"zero"},
-  {q:"If you press this button, the machine ___ (start).",accept:["starts"],rule:"zero"},
- ],
- choice:[
-  {q:"If you heat water to 100°C, it ___.",options:["boils","will boil","boiled"],correct:0,rule:"zero"},
-  {q:"If I have time tomorrow, I ___ visit you.",options:["visit","will visit","visited"],correct:1,rule:"first"},
-  {q:"Metal ___ when heated.",options:["expand","expands","will expand"],correct:1,rule:"zero"},
-  {q:"If you don't hurry, you ___ the bus.",options:["miss","will miss","missed"],correct:1,rule:"first"},
-  {q:"If we mix red and white, we ___ pink.",options:["get","gets","will get"],correct:0,rule:"zero"},
-  {q:"If it snows this weekend, we ___ skiing.",options:["go","goes","will go"],correct:2,rule:"first"},
-  {q:"Ice ___ when it gets warm.",options:["melt","melts","will melt"],correct:1,rule:"zero"},
-  {q:"If you don't practice, you ___ forget English.",options:["forget","will forget","forgot"],correct:1,rule:"first"},
-  {q:"The sun ___ in the east.",options:["rise","rises","will rise"],correct:1,rule:"zero"},
-  {q:"If she arrives late, we ___ without her.",options:["start","will start","started"],correct:1,rule:"first"},
- ]
-},
-tenses:{
- quiz:[
-  {q:"When I got home, my brother ___ dinner already.",options:["cooked","was cooking","had cooked","cooks"],correct:2,rule:"perfectSignal"},
-  {q:"While she ___, the phone rang.",options:["read","was reading","had read","reads"],correct:1,rule:"continuous"},
-  {q:"By the time we arrived, the film ___.",options:["started","was starting","had started","starts"],correct:2,rule:"perfectSignal"},
-  {q:"I ___ down the street when I saw an old friend.",options:["walked","was walking","had walked","walk"],correct:1,rule:"continuous"},
-  {q:"She was tired because she ___ well the night before.",options:["didn't sleep","wasn't sleeping","hadn't slept","doesn't sleep"],correct:2,rule:"perfectSignal"},
-  {q:"I ___ breakfast at 7 am yesterday.",options:["ate","was eating","had eaten","eat"],correct:0,rule:"simple"},
-  {q:"When I arrived, she ___ dinner (she started cooking after that).",options:["cooked","was cooking","had cooked","cooks"],correct:0,rule:"sequenceWhen"},
-  {q:"When I arrived, she ___ dinner (already in progress).",options:["cooked","was cooking","had cooked","cooks"],correct:1,rule:"sequenceWhen"},
-  {q:"He ___ to Paris last year.",options:["went","was going","had gone","goes"],correct:0,rule:"simple"},
-  {q:"I had never ___ such a beautiful sunset before.",options:["see","saw","seen","seeing"],correct:2,rule:"perfectSignal"},
- ],
- fill:[
-  {q:"I ___ (watch) TV at 8 pm yesterday.",accept:["was watching"],rule:"continuous"},
-  {q:"They ___ (play) football when it started raining.",accept:["were playing"],rule:"continuous"},
-  {q:"I ___ (already / finish) dinner when he arrived.",accept:["had already finished"],rule:"perfectSignal"},
-  {q:"She ___ (leave) before I called her.",accept:["had left"],rule:"perfectSignal"},
-  {q:"I ___ (visit) Paris last year.",accept:["visited"],rule:"simple"},
-  {q:"When I arrived, she had already ___ (leave).",accept:["left"],rule:"perfectSignal"},
-  {q:"While I ___ (cook) dinner, the phone rang.",accept:["was cooking"],rule:"continuous"},
-  {q:"By the time we got there, the train ___ (leave).",accept:["had left"],rule:"perfectSignal"},
-  {q:"She ___ (not go) to school yesterday.",accept:["did not go","didn't go"],rule:"simple"},
-  {q:"He ___ (just / finish) his homework when I called.",accept:["had just finished"],rule:"perfectSignal"},
- ],
- choice:[
-  {q:"I ___ to the cinema last Friday.",options:["went","was going","had gone"],correct:0,rule:"simple"},
-  {q:"When she called, I ___ dinner.",options:["cook","was cooking","had cooked"],correct:1,rule:"continuous"},
-  {q:"He couldn't open the door because he ___ his keys at home.",options:["leaves","left","had left"],correct:2,rule:"perfectSignal"},
-  {q:"We ___ TV when the lights went out.",options:["watch","were watching","had watched"],correct:1,rule:"continuous"},
-  {q:"She ___ to London in 2019.",options:["move","moved","had moved"],correct:1,rule:"simple"},
-  {q:"By 6 pm, we ___ all the work.",options:["finish","finished","had finished"],correct:2,rule:"perfectSignal"},
-  {q:"While they ___, it started to rain.",options:["walk","were walking","had walked"],correct:1,rule:"continuous"},
-  {q:"He ___ the letter yesterday.",options:["write","wrote","had written"],correct:1,rule:"simple"},
-  {q:"When I got to the station, the train ___.",options:["leaves","left","had left"],correct:2,rule:"perfectSignal"},
-  {q:"She ___ a book when I saw her.",options:["read","was reading","had read"],correct:1,rule:"continuous"},
- ]
-},
-relative:{
- quiz:[
-  {q:"The man ___ called you is my boss.",options:["who","which","whose","where"],correct:0,rule:"pronounChoice"},
-  {q:"This is the book ___ I bought yesterday.",options:["who","which","whose","why"],correct:1,rule:"pronounChoice"},
-  {q:"The woman ___ car was stolen called the police.",options:["who","which","whose","where"],correct:2,rule:"pronounChoice"},
-  {q:"This is the house ___ I grew up.",options:["who","which","where","why"],correct:2,rule:"pronounChoice"},
-  {q:"I remember the day ___ we met.",options:["where","when","whose","which"],correct:1,rule:"pronounChoice"},
-  {q:"My sister, ___ lives in London, is visiting us.",options:["that","who","whose","-"],correct:1,rule:"nonDefining"},
-  {q:"The car ___ is parked outside belongs to my neighbor.",options:["who","which","whose","when"],correct:1,rule:"pronounChoice"},
-  {q:"That's the reason ___ she left.",options:["where","when","why","which"],correct:2,rule:"pronounChoice"},
-  {q:"The students ___ passed the exam were happy.",options:["who","which","whose","where"],correct:0,rule:"pronounChoice"},
-  {q:"This is the restaurant ___ we had dinner.",options:["who","which","where","whose"],correct:2,rule:"pronounChoice"},
- ],
- fill:[
-  {q:"The teacher ___ taught me English was very kind.",accept:["who","that"],rule:"pronounChoice"},
-  {q:"I have a friend ___ car was stolen.",accept:["whose"],rule:"pronounChoice"},
-  {q:"That's the restaurant ___ we had dinner.",accept:["where"],rule:"pronounChoice"},
-  {q:"She is the woman ___ I saw yesterday.",accept:["who","that","whom",""],rule:"omit"},
-  {q:"This is the reason ___ I quit my job.",accept:["why"],rule:"pronounChoice"},
-  {q:"The film ___ we watched was boring.",accept:["which","that",""],rule:"omit"},
-  {q:"I'll never forget the day ___ I graduated.",accept:["when"],rule:"pronounChoice"},
-  {q:"The man ___ helped me was very friendly.",accept:["who","that"],rule:"pronounChoice"},
-  {q:"This is the shop ___ sells fresh bread.",accept:["which","that"],rule:"pronounChoice"},
-  {q:"My brother, ___ lives in Tashkent, called me.",accept:["who"],rule:"nonDefining"},
- ],
- choice:[
-  {q:"The girl ___ won the competition is my classmate.",options:["who","which","where"],correct:0,rule:"pronounChoice"},
-  {q:"This is the park ___ we used to play.",options:["who","which","where"],correct:2,rule:"pronounChoice"},
-  {q:"The book ___ is on the table is mine.",options:["who","which","whose"],correct:1,rule:"pronounChoice"},
-  {q:"The man ___ dog barked all night is my neighbor.",options:["who","which","whose"],correct:2,rule:"pronounChoice"},
-  {q:"I remember the year ___ we graduated.",options:["where","when","which"],correct:1,rule:"pronounChoice"},
-  {q:"The people ___ live next door are very nice.",options:["who","which","whose"],correct:0,rule:"pronounChoice"},
-  {q:"This is the reason ___ I called you.",options:["where","why","who"],correct:1,rule:"pronounChoice"},
-  {q:"The laptop ___ I bought last week broke already.",options:["who","which","where"],correct:1,rule:"pronounChoice"},
-  {q:"That's the café ___ we first met.",options:["who","which","where"],correct:2,rule:"pronounChoice"},
-  {q:"The woman ___ helped us was a tourist guide.",options:["who","which","whose"],correct:0,rule:"pronounChoice"},
- ]
-},
-passive:{
- quiz:[
-  {q:"The letter ___ by John.",options:["wrote","was written","is written","writes"],correct:1,rule:"tenseMatch"},
-  {q:"This house ___ in 1990.",options:["built","was built","is built","builds"],correct:1,rule:"tenseMatch"},
-  {q:"The report ___ already.",options:["completed","was completed","has been completed","completes"],correct:2,rule:"tenseMatch"},
-  {q:"English ___ all over the world.",options:["speaks","spoke","is spoken","was spoken"],correct:2,rule:"tenseMatch"},
-  {q:"The window ___ by the storm.",options:["broke","was broken","is broken","breaks"],correct:1,rule:"tenseMatch"},
-  {q:"New songs ___ every year.",options:["release","released","are released","is released"],correct:2,rule:"tenseMatch"},
-  {q:"The bridge ___ next year.",options:["builds","built","will be built","is built"],correct:2,rule:"tenseMatch"},
-  {q:"The car ___ right now.",options:["repairs","is being repaired","was repaired","repaired"],correct:1,rule:"tenseMatch"},
-  {q:"The cake ___ by my mother.",options:["made","was made","is made","makes"],correct:1,rule:"tenseMatch"},
-  {q:"The rules ___ before the game starts.",options:["explain","explained","will be explained","are explained"],correct:2,rule:"tenseMatch"},
- ],
- fill:[
-  {q:"The letter ___ (write) by John.",accept:["was written"],rule:"formation"},
-  {q:"This bridge ___ (build) in 2005.",accept:["was built"],rule:"formation"},
-  {q:"The homework ___ (already / finish).",accept:["has already been finished"],rule:"tenseMatch"},
-  {q:"English ___ (speak) in many countries.",accept:["is spoken"],rule:"formation"},
-  {q:"The car ___ (repair) right now.",accept:["is being repaired"],rule:"tenseMatch"},
-  {q:"The results ___ (announce) tomorrow.",accept:["will be announced"],rule:"tenseMatch"},
-  {q:"The room ___ (clean) every day.",accept:["is cleaned"],rule:"formation"},
-  {q:"The window ___ (break) yesterday.",accept:["was broken"],rule:"formation"},
-  {q:"A new hospital ___ (build) near our house next year.",accept:["will be built"],rule:"tenseMatch"},
-  {q:"The email ___ (send) already.",accept:["has already been sent"],rule:"tenseMatch"},
- ],
- choice:[
-  {q:"This bread ___ every morning.",options:["is made","was made","will be made"],correct:0,rule:"formation"},
-  {q:"The Eiffel Tower ___ in 1889.",options:["is built","was built","will be built"],correct:1,rule:"tenseMatch"},
-  {q:"The package ___ tomorrow.",options:["is delivered","was delivered","will be delivered"],correct:2,rule:"tenseMatch"},
-  {q:"The movie ___ by millions of people.",options:["is watched","was watched","will be watched"],correct:0,rule:"formation"},
-  {q:"My phone ___ last week.",options:["is fixed","was fixed","will be fixed"],correct:1,rule:"tenseMatch"},
-  {q:"The decision ___ next Monday.",options:["is made","was made","will be made"],correct:2,rule:"tenseMatch"},
-  {q:"The room ___ right now.",options:["is being cleaned","was cleaned","will be cleaned"],correct:0,rule:"tenseMatch"},
-  {q:"That song ___ by a famous singer.",options:["is sung","was sung","will be sung"],correct:1,rule:"byAgent"},
-  {q:"New rules ___ every year.",options:["is introduced","are introduced","will be introduced"],correct:1,rule:"formation"},
-  {q:"The letter ___ by tomorrow.",options:["is sent","was sent","will be sent"],correct:2,rule:"tenseMatch"},
- ]
-}
-};
+      const EX = {
+        conditionals: {
+          quiz: [
+            {
+              q: "If you ___ ice, it melts.",
+              options: ["heat", "heats", "heated", "will heat"],
+              correct: 0,
+              rule: "zero",
+            },
+            {
+              q: "If water reaches 0°C, it ___.",
+              options: ["freeze", "freezes", "froze", "will freeze"],
+              correct: 1,
+              rule: "zero",
+            },
+            {
+              q: "If it rains tomorrow, we ___ home.",
+              options: ["stay", "stays", "stayed", "will stay"],
+              correct: 3,
+              rule: "first",
+            },
+            {
+              q: "If you don't study, you ___ the exam.",
+              options: ["fail", "fails", "failed", "will fail"],
+              correct: 3,
+              rule: "first",
+            },
+            {
+              q: "If you mix yellow and blue, you ___ green.",
+              options: ["get", "gets", "got", "will get"],
+              correct: 0,
+              rule: "zero",
+            },
+            {
+              q: "If she has free time, she ___ you tomorrow.",
+              options: ["call", "calls", "called", "will call"],
+              correct: 3,
+              rule: "first",
+            },
+            {
+              q: "Plants die if they ___ water.",
+              options: ["don't get", "doesn't get", "didn't get", "won't get"],
+              correct: 0,
+              rule: "zero",
+            },
+            {
+              q: "If I finish work early, I ___ to the gym tonight.",
+              options: ["go", "goes", "went", "will go"],
+              correct: 3,
+              rule: "first",
+            },
+            {
+              q: "Ice ___ if you heat it.",
+              options: ["melt", "melts", "melted", "will melt"],
+              correct: 1,
+              rule: "zero",
+            },
+            {
+              q: "If they don't hurry, they ___ the train.",
+              options: ["miss", "misses", "missed", "will miss"],
+              correct: 3,
+              rule: "first",
+            },
+          ],
+          fill: [
+            {
+              q: "If you heat ice, it ___ (melt).",
+              accept: ["melts"],
+              rule: "zero",
+            },
+            {
+              q: "If it rains, the ground ___ (get) wet.",
+              accept: ["gets"],
+              rule: "zero",
+            },
+            {
+              q: "If she studies hard, she ___ (pass) the exam.",
+              accept: ["will pass"],
+              rule: "first",
+            },
+            {
+              q: "If we don't leave now, we ___ (be) late.",
+              accept: ["will be"],
+              rule: "first",
+            },
+            {
+              q: "If you touch fire, you ___ (get) burned.",
+              accept: ["get"],
+              rule: "zero",
+            },
+            {
+              q: "If it is sunny tomorrow, we ___ (go) to the beach.",
+              accept: ["will go"],
+              rule: "first",
+            },
+            {
+              q: "Water ___ (boil) if you heat it to 100°C.",
+              accept: ["boils"],
+              rule: "zero",
+            },
+            {
+              q: "If he doesn't call, I ___ (worry).",
+              accept: ["will worry"],
+              rule: "first",
+            },
+            {
+              q: "If you don't water plants, they ___ (die).",
+              accept: ["die"],
+              rule: "zero",
+            },
+            {
+              q: "If you press this button, the machine ___ (start).",
+              accept: ["starts"],
+              rule: "zero",
+            },
+          ],
+          choice: [
+            {
+              q: "If you heat water to 100°C, it ___.",
+              options: ["boils", "will boil", "boiled"],
+              correct: 0,
+              rule: "zero",
+            },
+            {
+              q: "If I have time tomorrow, I ___ visit you.",
+              options: ["visit", "will visit", "visited"],
+              correct: 1,
+              rule: "first",
+            },
+            {
+              q: "Metal ___ when heated.",
+              options: ["expand", "expands", "will expand"],
+              correct: 1,
+              rule: "zero",
+            },
+            {
+              q: "If you don't hurry, you ___ the bus.",
+              options: ["miss", "will miss", "missed"],
+              correct: 1,
+              rule: "first",
+            },
+            {
+              q: "If we mix red and white, we ___ pink.",
+              options: ["get", "gets", "will get"],
+              correct: 0,
+              rule: "zero",
+            },
+            {
+              q: "If it snows this weekend, we ___ skiing.",
+              options: ["go", "goes", "will go"],
+              correct: 2,
+              rule: "first",
+            },
+            {
+              q: "Ice ___ when it gets warm.",
+              options: ["melt", "melts", "will melt"],
+              correct: 1,
+              rule: "zero",
+            },
+            {
+              q: "If you don't practice, you ___ forget English.",
+              options: ["forget", "will forget", "forgot"],
+              correct: 1,
+              rule: "first",
+            },
+            {
+              q: "The sun ___ in the east.",
+              options: ["rise", "rises", "will rise"],
+              correct: 1,
+              rule: "zero",
+            },
+            {
+              q: "If she arrives late, we ___ without her.",
+              options: ["start", "will start", "started"],
+              correct: 1,
+              rule: "first",
+            },
+          ],
+        },
+        tenses: {
+          quiz: [
+            {
+              q: "When I got home, my brother ___ dinner already.",
+              options: ["cooked", "was cooking", "had cooked", "cooks"],
+              correct: 2,
+              rule: "perfectSignal",
+            },
+            {
+              q: "While she ___, the phone rang.",
+              options: ["read", "was reading", "had read", "reads"],
+              correct: 1,
+              rule: "continuous",
+            },
+            {
+              q: "By the time we arrived, the film ___.",
+              options: ["started", "was starting", "had started", "starts"],
+              correct: 2,
+              rule: "perfectSignal",
+            },
+            {
+              q: "I ___ down the street when I saw an old friend.",
+              options: ["walked", "was walking", "had walked", "walk"],
+              correct: 1,
+              rule: "continuous",
+            },
+            {
+              q: "She was tired because she ___ well the night before.",
+              options: [
+                "didn't sleep",
+                "wasn't sleeping",
+                "hadn't slept",
+                "doesn't sleep",
+              ],
+              correct: 2,
+              rule: "perfectSignal",
+            },
+            {
+              q: "I ___ breakfast at 7 am yesterday.",
+              options: ["ate", "was eating", "had eaten", "eat"],
+              correct: 0,
+              rule: "simple",
+            },
+            {
+              q: "When I arrived, she ___ dinner (she started cooking after that).",
+              options: ["cooked", "was cooking", "had cooked", "cooks"],
+              correct: 0,
+              rule: "sequenceWhen",
+            },
+            {
+              q: "When I arrived, she ___ dinner (already in progress).",
+              options: ["cooked", "was cooking", "had cooked", "cooks"],
+              correct: 1,
+              rule: "sequenceWhen",
+            },
+            {
+              q: "He ___ to Paris last year.",
+              options: ["went", "was going", "had gone", "goes"],
+              correct: 0,
+              rule: "simple",
+            },
+            {
+              q: "I had never ___ such a beautiful sunset before.",
+              options: ["see", "saw", "seen", "seeing"],
+              correct: 2,
+              rule: "perfectSignal",
+            },
+          ],
+          fill: [
+            {
+              q: "I ___ (watch) TV at 8 pm yesterday.",
+              accept: ["was watching"],
+              rule: "continuous",
+            },
+            {
+              q: "They ___ (play) football when it started raining.",
+              accept: ["were playing"],
+              rule: "continuous",
+            },
+            {
+              q: "I ___ (already / finish) dinner when he arrived.",
+              accept: ["had already finished"],
+              rule: "perfectSignal",
+            },
+            {
+              q: "She ___ (leave) before I called her.",
+              accept: ["had left"],
+              rule: "perfectSignal",
+            },
+            {
+              q: "I ___ (visit) Paris last year.",
+              accept: ["visited"],
+              rule: "simple",
+            },
+            {
+              q: "When I arrived, she had already ___ (leave).",
+              accept: ["left"],
+              rule: "perfectSignal",
+            },
+            {
+              q: "While I ___ (cook) dinner, the phone rang.",
+              accept: ["was cooking"],
+              rule: "continuous",
+            },
+            {
+              q: "By the time we got there, the train ___ (leave).",
+              accept: ["had left"],
+              rule: "perfectSignal",
+            },
+            {
+              q: "She ___ (not go) to school yesterday.",
+              accept: ["did not go", "didn't go"],
+              rule: "simple",
+            },
+            {
+              q: "He ___ (just / finish) his homework when I called.",
+              accept: ["had just finished"],
+              rule: "perfectSignal",
+            },
+          ],
+          choice: [
+            {
+              q: "I ___ to the cinema last Friday.",
+              options: ["went", "was going", "had gone"],
+              correct: 0,
+              rule: "simple",
+            },
+            {
+              q: "When she called, I ___ dinner.",
+              options: ["cook", "was cooking", "had cooked"],
+              correct: 1,
+              rule: "continuous",
+            },
+            {
+              q: "He couldn't open the door because he ___ his keys at home.",
+              options: ["leaves", "left", "had left"],
+              correct: 2,
+              rule: "perfectSignal",
+            },
+            {
+              q: "We ___ TV when the lights went out.",
+              options: ["watch", "were watching", "had watched"],
+              correct: 1,
+              rule: "continuous",
+            },
+            {
+              q: "She ___ to London in 2019.",
+              options: ["move", "moved", "had moved"],
+              correct: 1,
+              rule: "simple",
+            },
+            {
+              q: "By 6 pm, we ___ all the work.",
+              options: ["finish", "finished", "had finished"],
+              correct: 2,
+              rule: "perfectSignal",
+            },
+            {
+              q: "While they ___, it started to rain.",
+              options: ["walk", "were walking", "had walked"],
+              correct: 1,
+              rule: "continuous",
+            },
+            {
+              q: "He ___ the letter yesterday.",
+              options: ["write", "wrote", "had written"],
+              correct: 1,
+              rule: "simple",
+            },
+            {
+              q: "When I got to the station, the train ___.",
+              options: ["leaves", "left", "had left"],
+              correct: 2,
+              rule: "perfectSignal",
+            },
+            {
+              q: "She ___ a book when I saw her.",
+              options: ["read", "was reading", "had read"],
+              correct: 1,
+              rule: "continuous",
+            },
+          ],
+        },
+        relative: {
+          quiz: [
+            {
+              q: "The man ___ called you is my boss.",
+              options: ["who", "which", "whose", "where"],
+              correct: 0,
+              rule: "pronounChoice",
+            },
+            {
+              q: "This is the book ___ I bought yesterday.",
+              options: ["who", "which", "whose", "why"],
+              correct: 1,
+              rule: "pronounChoice",
+            },
+            {
+              q: "The woman ___ car was stolen called the police.",
+              options: ["who", "which", "whose", "where"],
+              correct: 2,
+              rule: "pronounChoice",
+            },
+            {
+              q: "This is the house ___ I grew up.",
+              options: ["who", "which", "where", "why"],
+              correct: 2,
+              rule: "pronounChoice",
+            },
+            {
+              q: "I remember the day ___ we met.",
+              options: ["where", "when", "whose", "which"],
+              correct: 1,
+              rule: "pronounChoice",
+            },
+            {
+              q: "My sister, ___ lives in London, is visiting us.",
+              options: ["that", "who", "whose", "-"],
+              correct: 1,
+              rule: "nonDefining",
+            },
+            {
+              q: "The car ___ is parked outside belongs to my neighbor.",
+              options: ["who", "which", "whose", "when"],
+              correct: 1,
+              rule: "pronounChoice",
+            },
+            {
+              q: "That's the reason ___ she left.",
+              options: ["where", "when", "why", "which"],
+              correct: 2,
+              rule: "pronounChoice",
+            },
+            {
+              q: "The students ___ passed the exam were happy.",
+              options: ["who", "which", "whose", "where"],
+              correct: 0,
+              rule: "pronounChoice",
+            },
+            {
+              q: "This is the restaurant ___ we had dinner.",
+              options: ["who", "which", "where", "whose"],
+              correct: 2,
+              rule: "pronounChoice",
+            },
+          ],
+          fill: [
+            {
+              q: "The teacher ___ taught me English was very kind.",
+              accept: ["who", "that"],
+              rule: "pronounChoice",
+            },
+            {
+              q: "I have a friend ___ car was stolen.",
+              accept: ["whose"],
+              rule: "pronounChoice",
+            },
+            {
+              q: "That's the restaurant ___ we had dinner.",
+              accept: ["where"],
+              rule: "pronounChoice",
+            },
+            {
+              q: "She is the woman ___ I saw yesterday.",
+              accept: ["who", "that", "whom", ""],
+              rule: "omit",
+            },
+            {
+              q: "This is the reason ___ I quit my job.",
+              accept: ["why"],
+              rule: "pronounChoice",
+            },
+            {
+              q: "The film ___ we watched was boring.",
+              accept: ["which", "that", ""],
+              rule: "omit",
+            },
+            {
+              q: "I'll never forget the day ___ I graduated.",
+              accept: ["when"],
+              rule: "pronounChoice",
+            },
+            {
+              q: "The man ___ helped me was very friendly.",
+              accept: ["who", "that"],
+              rule: "pronounChoice",
+            },
+            {
+              q: "This is the shop ___ sells fresh bread.",
+              accept: ["which", "that"],
+              rule: "pronounChoice",
+            },
+            {
+              q: "My brother, ___ lives in Tashkent, called me.",
+              accept: ["who"],
+              rule: "nonDefining",
+            },
+          ],
+          choice: [
+            {
+              q: "The girl ___ won the competition is my classmate.",
+              options: ["who", "which", "where"],
+              correct: 0,
+              rule: "pronounChoice",
+            },
+            {
+              q: "This is the park ___ we used to play.",
+              options: ["who", "which", "where"],
+              correct: 2,
+              rule: "pronounChoice",
+            },
+            {
+              q: "The book ___ is on the table is mine.",
+              options: ["who", "which", "whose"],
+              correct: 1,
+              rule: "pronounChoice",
+            },
+            {
+              q: "The man ___ dog barked all night is my neighbor.",
+              options: ["who", "which", "whose"],
+              correct: 2,
+              rule: "pronounChoice",
+            },
+            {
+              q: "I remember the year ___ we graduated.",
+              options: ["where", "when", "which"],
+              correct: 1,
+              rule: "pronounChoice",
+            },
+            {
+              q: "The people ___ live next door are very nice.",
+              options: ["who", "which", "whose"],
+              correct: 0,
+              rule: "pronounChoice",
+            },
+            {
+              q: "This is the reason ___ I called you.",
+              options: ["where", "why", "who"],
+              correct: 1,
+              rule: "pronounChoice",
+            },
+            {
+              q: "The laptop ___ I bought last week broke already.",
+              options: ["who", "which", "where"],
+              correct: 1,
+              rule: "pronounChoice",
+            },
+            {
+              q: "That's the café ___ we first met.",
+              options: ["who", "which", "where"],
+              correct: 2,
+              rule: "pronounChoice",
+            },
+            {
+              q: "The woman ___ helped us was a tourist guide.",
+              options: ["who", "which", "whose"],
+              correct: 0,
+              rule: "pronounChoice",
+            },
+          ],
+        },
+        passive: {
+          quiz: [
+            {
+              q: "The letter ___ by John.",
+              options: ["wrote", "was written", "is written", "writes"],
+              correct: 1,
+              rule: "tenseMatch",
+            },
+            {
+              q: "This house ___ in 1990.",
+              options: ["built", "was built", "is built", "builds"],
+              correct: 1,
+              rule: "tenseMatch",
+            },
+            {
+              q: "The report ___ already.",
+              options: [
+                "completed",
+                "was completed",
+                "has been completed",
+                "completes",
+              ],
+              correct: 2,
+              rule: "tenseMatch",
+            },
+            {
+              q: "English ___ all over the world.",
+              options: ["speaks", "spoke", "is spoken", "was spoken"],
+              correct: 2,
+              rule: "tenseMatch",
+            },
+            {
+              q: "The window ___ by the storm.",
+              options: ["broke", "was broken", "is broken", "breaks"],
+              correct: 1,
+              rule: "tenseMatch",
+            },
+            {
+              q: "New songs ___ every year.",
+              options: ["release", "released", "are released", "is released"],
+              correct: 2,
+              rule: "tenseMatch",
+            },
+            {
+              q: "The bridge ___ next year.",
+              options: ["builds", "built", "will be built", "is built"],
+              correct: 2,
+              rule: "tenseMatch",
+            },
+            {
+              q: "The car ___ right now.",
+              options: [
+                "repairs",
+                "is being repaired",
+                "was repaired",
+                "repaired",
+              ],
+              correct: 1,
+              rule: "tenseMatch",
+            },
+            {
+              q: "The cake ___ by my mother.",
+              options: ["made", "was made", "is made", "makes"],
+              correct: 1,
+              rule: "tenseMatch",
+            },
+            {
+              q: "The rules ___ before the game starts.",
+              options: [
+                "explain",
+                "explained",
+                "will be explained",
+                "are explained",
+              ],
+              correct: 2,
+              rule: "tenseMatch",
+            },
+          ],
+          fill: [
+            {
+              q: "The letter ___ (write) by John.",
+              accept: ["was written"],
+              rule: "formation",
+            },
+            {
+              q: "This bridge ___ (build) in 2005.",
+              accept: ["was built"],
+              rule: "formation",
+            },
+            {
+              q: "The homework ___ (already / finish).",
+              accept: ["has already been finished"],
+              rule: "tenseMatch",
+            },
+            {
+              q: "English ___ (speak) in many countries.",
+              accept: ["is spoken"],
+              rule: "formation",
+            },
+            {
+              q: "The car ___ (repair) right now.",
+              accept: ["is being repaired"],
+              rule: "tenseMatch",
+            },
+            {
+              q: "The results ___ (announce) tomorrow.",
+              accept: ["will be announced"],
+              rule: "tenseMatch",
+            },
+            {
+              q: "The room ___ (clean) every day.",
+              accept: ["is cleaned"],
+              rule: "formation",
+            },
+            {
+              q: "The window ___ (break) yesterday.",
+              accept: ["was broken"],
+              rule: "formation",
+            },
+            {
+              q: "A new hospital ___ (build) near our house next year.",
+              accept: ["will be built"],
+              rule: "tenseMatch",
+            },
+            {
+              q: "The email ___ (send) already.",
+              accept: ["has already been sent"],
+              rule: "tenseMatch",
+            },
+          ],
+          choice: [
+            {
+              q: "This bread ___ every morning.",
+              options: ["is made", "was made", "will be made"],
+              correct: 0,
+              rule: "formation",
+            },
+            {
+              q: "The Eiffel Tower ___ in 1889.",
+              options: ["is built", "was built", "will be built"],
+              correct: 1,
+              rule: "tenseMatch",
+            },
+            {
+              q: "The package ___ tomorrow.",
+              options: ["is delivered", "was delivered", "will be delivered"],
+              correct: 2,
+              rule: "tenseMatch",
+            },
+            {
+              q: "The movie ___ by millions of people.",
+              options: ["is watched", "was watched", "will be watched"],
+              correct: 0,
+              rule: "formation",
+            },
+            {
+              q: "My phone ___ last week.",
+              options: ["is fixed", "was fixed", "will be fixed"],
+              correct: 1,
+              rule: "tenseMatch",
+            },
+            {
+              q: "The decision ___ next Monday.",
+              options: ["is made", "was made", "will be made"],
+              correct: 2,
+              rule: "tenseMatch",
+            },
+            {
+              q: "The room ___ right now.",
+              options: ["is being cleaned", "was cleaned", "will be cleaned"],
+              correct: 0,
+              rule: "tenseMatch",
+            },
+            {
+              q: "That song ___ by a famous singer.",
+              options: ["is sung", "was sung", "will be sung"],
+              correct: 1,
+              rule: "byAgent",
+            },
+            {
+              q: "New rules ___ every year.",
+              options: [
+                "is introduced",
+                "are introduced",
+                "will be introduced",
+              ],
+              correct: 1,
+              rule: "formation",
+            },
+            {
+              q: "The letter ___ by tomorrow.",
+              options: ["is sent", "was sent", "will be sent"],
+              correct: 2,
+              rule: "tenseMatch",
+            },
+          ],
+        },
+      };
 
-/* ---- irregular verbs ---- */
-const VERBS = [
- {v1:"be",v2:["was","were"],v3:["been"],ru:"быть",uz:"bo'lmoq"},
- {v1:"begin",v2:["began"],v3:["begun"],ru:"начинать",uz:"boshlamoq"},
- {v1:"break",v2:["broke"],v3:["broken"],ru:"ломать",uz:"sindirmoq"},
- {v1:"bring",v2:["brought"],v3:["brought"],ru:"приносить",uz:"olib kelmoq"},
- {v1:"build",v2:["built"],v3:["built"],ru:"строить",uz:"qurmoq"},
- {v1:"buy",v2:["bought"],v3:["bought"],ru:"покупать",uz:"sotib olmoq"},
- {v1:"catch",v2:["caught"],v3:["caught"],ru:"ловить",uz:"tutmoq"},
- {v1:"choose",v2:["chose"],v3:["chosen"],ru:"выбирать",uz:"tanlamoq"},
- {v1:"come",v2:["came"],v3:["come"],ru:"приходить",uz:"kelmoq"},
- {v1:"cost",v2:["cost"],v3:["cost"],ru:"стоить",uz:"turmoq (narxi)"},
- {v1:"cut",v2:["cut"],v3:["cut"],ru:"резать",uz:"kesmoq"},
- {v1:"do",v2:["did"],v3:["done"],ru:"делать",uz:"qilmoq"},
- {v1:"draw",v2:["drew"],v3:["drawn"],ru:"рисовать",uz:"chizmoq"},
- {v1:"drink",v2:["drank"],v3:["drunk"],ru:"пить",uz:"ichmoq"},
- {v1:"drive",v2:["drove"],v3:["driven"],ru:"водить",uz:"haydamoq"},
- {v1:"eat",v2:["ate"],v3:["eaten"],ru:"есть",uz:"yemoq"},
- {v1:"fall",v2:["fell"],v3:["fallen"],ru:"падать",uz:"yiqilmoq"},
- {v1:"feel",v2:["felt"],v3:["felt"],ru:"чувствовать",uz:"his qilmoq"},
- {v1:"fight",v2:["fought"],v3:["fought"],ru:"драться",uz:"jang qilmoq"},
- {v1:"find",v2:["found"],v3:["found"],ru:"находить",uz:"topmoq"},
- {v1:"fly",v2:["flew"],v3:["flown"],ru:"летать",uz:"uchmoq"},
- {v1:"forget",v2:["forgot"],v3:["forgotten"],ru:"забывать",uz:"unutmoq"},
- {v1:"get",v2:["got"],v3:["got","gotten"],ru:"получать",uz:"olmoq"},
- {v1:"give",v2:["gave"],v3:["given"],ru:"давать",uz:"bermoq"},
- {v1:"go",v2:["went"],v3:["gone"],ru:"идти",uz:"bormoq"},
- {v1:"grow",v2:["grew"],v3:["grown"],ru:"расти",uz:"o'smoq"},
- {v1:"have",v2:["had"],v3:["had"],ru:"иметь",uz:"ega bo'lmoq"},
- {v1:"hear",v2:["heard"],v3:["heard"],ru:"слышать",uz:"eshitmoq"},
- {v1:"hide",v2:["hid"],v3:["hidden"],ru:"прятать",uz:"yashirmoq"},
- {v1:"hit",v2:["hit"],v3:["hit"],ru:"ударять",uz:"urmoq"},
- {v1:"hold",v2:["held"],v3:["held"],ru:"держать",uz:"ushlamoq"},
- {v1:"keep",v2:["kept"],v3:["kept"],ru:"хранить",uz:"saqlamoq"},
- {v1:"know",v2:["knew"],v3:["known"],ru:"знать",uz:"bilmoq"},
- {v1:"leave",v2:["left"],v3:["left"],ru:"покидать",uz:"tark etmoq"},
- {v1:"lend",v2:["lent"],v3:["lent"],ru:"одалживать",uz:"qarzga bermoq"},
- {v1:"let",v2:["let"],v3:["let"],ru:"позволять",uz:"ruxsat bermoq"},
- {v1:"lose",v2:["lost"],v3:["lost"],ru:"терять",uz:"yo'qotmoq"},
- {v1:"make",v2:["made"],v3:["made"],ru:"делать",uz:"yasamoq"},
- {v1:"mean",v2:["meant"],v3:["meant"],ru:"значить",uz:"anglatmoq"},
- {v1:"meet",v2:["met"],v3:["met"],ru:"встречать",uz:"uchrashmoq"},
- {v1:"pay",v2:["paid"],v3:["paid"],ru:"платить",uz:"to'lamoq"},
- {v1:"put",v2:["put"],v3:["put"],ru:"класть",uz:"qo'ymoq"},
- {v1:"read",v2:["read"],v3:["read"],ru:"читать",uz:"o'qimoq"},
- {v1:"ride",v2:["rode"],v3:["ridden"],ru:"ездить верхом",uz:"minmoq"},
- {v1:"ring",v2:["rang"],v3:["rung"],ru:"звонить",uz:"jiringlamoq"},
- {v1:"rise",v2:["rose"],v3:["risen"],ru:"подниматься",uz:"ko'tarilmoq"},
- {v1:"run",v2:["ran"],v3:["run"],ru:"бегать",uz:"yugurmoq"},
- {v1:"say",v2:["said"],v3:["said"],ru:"сказать",uz:"aytmoq"},
- {v1:"see",v2:["saw"],v3:["seen"],ru:"видеть",uz:"ko'rmoq"},
- {v1:"sell",v2:["sold"],v3:["sold"],ru:"продавать",uz:"sotmoq"},
- {v1:"send",v2:["sent"],v3:["sent"],ru:"отправлять",uz:"yubormoq"},
- {v1:"set",v2:["set"],v3:["set"],ru:"устанавливать",uz:"o'rnatmoq"},
- {v1:"shoot",v2:["shot"],v3:["shot"],ru:"стрелять",uz:"otmoq"},
- {v1:"show",v2:["showed"],v3:["shown"],ru:"показывать",uz:"ko'rsatmoq"},
- {v1:"shut",v2:["shut"],v3:["shut"],ru:"закрывать",uz:"yopmoq"},
- {v1:"sing",v2:["sang"],v3:["sung"],ru:"петь",uz:"qo'shiq aytmoq"},
- {v1:"sit",v2:["sat"],v3:["sat"],ru:"сидеть",uz:"o'tirmoq"},
- {v1:"sleep",v2:["slept"],v3:["slept"],ru:"спать",uz:"uxlamoq"},
- {v1:"speak",v2:["spoke"],v3:["spoken"],ru:"говорить",uz:"gapirmoq"},
- {v1:"spend",v2:["spent"],v3:["spent"],ru:"тратить",uz:"sarflamoq"},
- {v1:"stand",v2:["stood"],v3:["stood"],ru:"стоять",uz:"turmoq"},
- {v1:"steal",v2:["stole"],v3:["stolen"],ru:"красть",uz:"o'g'irlamoq"},
- {v1:"swim",v2:["swam"],v3:["swum"],ru:"плавать",uz:"suzmoq"},
- {v1:"take",v2:["took"],v3:["taken"],ru:"брать",uz:"olmoq"},
- {v1:"teach",v2:["taught"],v3:["taught"],ru:"учить",uz:"o'rgatmoq"},
- {v1:"tell",v2:["told"],v3:["told"],ru:"рассказывать",uz:"aytib bermoq"},
- {v1:"think",v2:["thought"],v3:["thought"],ru:"думать",uz:"o'ylamoq"},
- {v1:"throw",v2:["threw"],v3:["thrown"],ru:"бросать",uz:"tashlamoq"},
- {v1:"understand",v2:["understood"],v3:["understood"],ru:"понимать",uz:"tushunmoq"},
- {v1:"wake",v2:["woke"],v3:["woken"],ru:"просыпаться",uz:"uyg'onmoq"},
- {v1:"wear",v2:["wore"],v3:["worn"],ru:"носить",uz:"kiymoq"},
- {v1:"win",v2:["won"],v3:["won"],ru:"выигрывать",uz:"yutmoq"},
- {v1:"write",v2:["wrote"],v3:["written"],ru:"писать",uz:"yozmoq"},
-];
+      /* ---- irregular verbs ---- */
+      const VERBS = [
+        {
+          v1: "be",
+          v2: ["was", "were"],
+          v3: ["been"],
+          ru: "быть",
+          uz: "bo'lmoq",
+        },
+        {
+          v1: "begin",
+          v2: ["began"],
+          v3: ["begun"],
+          ru: "начинать",
+          uz: "boshlamoq",
+        },
+        {
+          v1: "break",
+          v2: ["broke"],
+          v3: ["broken"],
+          ru: "ломать",
+          uz: "sindirmoq",
+        },
+        {
+          v1: "bring",
+          v2: ["brought"],
+          v3: ["brought"],
+          ru: "приносить",
+          uz: "olib kelmoq",
+        },
+        {
+          v1: "build",
+          v2: ["built"],
+          v3: ["built"],
+          ru: "строить",
+          uz: "qurmoq",
+        },
+        {
+          v1: "buy",
+          v2: ["bought"],
+          v3: ["bought"],
+          ru: "покупать",
+          uz: "sotib olmoq",
+        },
+        {
+          v1: "catch",
+          v2: ["caught"],
+          v3: ["caught"],
+          ru: "ловить",
+          uz: "tutmoq",
+        },
+        {
+          v1: "choose",
+          v2: ["chose"],
+          v3: ["chosen"],
+          ru: "выбирать",
+          uz: "tanlamoq",
+        },
+        {
+          v1: "come",
+          v2: ["came"],
+          v3: ["come"],
+          ru: "приходить",
+          uz: "kelmoq",
+        },
+        {
+          v1: "cost",
+          v2: ["cost"],
+          v3: ["cost"],
+          ru: "стоить",
+          uz: "turmoq (narxi)",
+        },
+        { v1: "cut", v2: ["cut"], v3: ["cut"], ru: "резать", uz: "kesmoq" },
+        { v1: "do", v2: ["did"], v3: ["done"], ru: "делать", uz: "qilmoq" },
+        {
+          v1: "draw",
+          v2: ["drew"],
+          v3: ["drawn"],
+          ru: "рисовать",
+          uz: "chizmoq",
+        },
+        { v1: "drink", v2: ["drank"], v3: ["drunk"], ru: "пить", uz: "ichmoq" },
+        {
+          v1: "drive",
+          v2: ["drove"],
+          v3: ["driven"],
+          ru: "водить",
+          uz: "haydamoq",
+        },
+        { v1: "eat", v2: ["ate"], v3: ["eaten"], ru: "есть", uz: "yemoq" },
+        {
+          v1: "fall",
+          v2: ["fell"],
+          v3: ["fallen"],
+          ru: "падать",
+          uz: "yiqilmoq",
+        },
+        {
+          v1: "feel",
+          v2: ["felt"],
+          v3: ["felt"],
+          ru: "чувствовать",
+          uz: "his qilmoq",
+        },
+        {
+          v1: "fight",
+          v2: ["fought"],
+          v3: ["fought"],
+          ru: "драться",
+          uz: "jang qilmoq",
+        },
+        {
+          v1: "find",
+          v2: ["found"],
+          v3: ["found"],
+          ru: "находить",
+          uz: "topmoq",
+        },
+        { v1: "fly", v2: ["flew"], v3: ["flown"], ru: "летать", uz: "uchmoq" },
+        {
+          v1: "forget",
+          v2: ["forgot"],
+          v3: ["forgotten"],
+          ru: "забывать",
+          uz: "unutmoq",
+        },
+        {
+          v1: "get",
+          v2: ["got"],
+          v3: ["got", "gotten"],
+          ru: "получать",
+          uz: "olmoq",
+        },
+        { v1: "give", v2: ["gave"], v3: ["given"], ru: "давать", uz: "bermoq" },
+        { v1: "go", v2: ["went"], v3: ["gone"], ru: "идти", uz: "bormoq" },
+        { v1: "grow", v2: ["grew"], v3: ["grown"], ru: "расти", uz: "o'smoq" },
+        {
+          v1: "have",
+          v2: ["had"],
+          v3: ["had"],
+          ru: "иметь",
+          uz: "ega bo'lmoq",
+        },
+        {
+          v1: "hear",
+          v2: ["heard"],
+          v3: ["heard"],
+          ru: "слышать",
+          uz: "eshitmoq",
+        },
+        {
+          v1: "hide",
+          v2: ["hid"],
+          v3: ["hidden"],
+          ru: "прятать",
+          uz: "yashirmoq",
+        },
+        { v1: "hit", v2: ["hit"], v3: ["hit"], ru: "ударять", uz: "urmoq" },
+        {
+          v1: "hold",
+          v2: ["held"],
+          v3: ["held"],
+          ru: "держать",
+          uz: "ushlamoq",
+        },
+        {
+          v1: "keep",
+          v2: ["kept"],
+          v3: ["kept"],
+          ru: "хранить",
+          uz: "saqlamoq",
+        },
+        { v1: "know", v2: ["knew"], v3: ["known"], ru: "знать", uz: "bilmoq" },
+        {
+          v1: "leave",
+          v2: ["left"],
+          v3: ["left"],
+          ru: "покидать",
+          uz: "tark etmoq",
+        },
+        {
+          v1: "lend",
+          v2: ["lent"],
+          v3: ["lent"],
+          ru: "одалживать",
+          uz: "qarzga bermoq",
+        },
+        {
+          v1: "let",
+          v2: ["let"],
+          v3: ["let"],
+          ru: "позволять",
+          uz: "ruxsat bermoq",
+        },
+        {
+          v1: "lose",
+          v2: ["lost"],
+          v3: ["lost"],
+          ru: "терять",
+          uz: "yo'qotmoq",
+        },
+        { v1: "make", v2: ["made"], v3: ["made"], ru: "делать", uz: "yasamoq" },
+        {
+          v1: "mean",
+          v2: ["meant"],
+          v3: ["meant"],
+          ru: "значить",
+          uz: "anglatmoq",
+        },
+        {
+          v1: "meet",
+          v2: ["met"],
+          v3: ["met"],
+          ru: "встречать",
+          uz: "uchrashmoq",
+        },
+        {
+          v1: "pay",
+          v2: ["paid"],
+          v3: ["paid"],
+          ru: "платить",
+          uz: "to'lamoq",
+        },
+        { v1: "put", v2: ["put"], v3: ["put"], ru: "класть", uz: "qo'ymoq" },
+        { v1: "read", v2: ["read"], v3: ["read"], ru: "читать", uz: "o'qimoq" },
+        {
+          v1: "ride",
+          v2: ["rode"],
+          v3: ["ridden"],
+          ru: "ездить верхом",
+          uz: "minmoq",
+        },
+        {
+          v1: "ring",
+          v2: ["rang"],
+          v3: ["rung"],
+          ru: "звонить",
+          uz: "jiringlamoq",
+        },
+        {
+          v1: "rise",
+          v2: ["rose"],
+          v3: ["risen"],
+          ru: "подниматься",
+          uz: "ko'tarilmoq",
+        },
+        { v1: "run", v2: ["ran"], v3: ["run"], ru: "бегать", uz: "yugurmoq" },
+        { v1: "say", v2: ["said"], v3: ["said"], ru: "сказать", uz: "aytmoq" },
+        { v1: "see", v2: ["saw"], v3: ["seen"], ru: "видеть", uz: "ko'rmoq" },
+        {
+          v1: "sell",
+          v2: ["sold"],
+          v3: ["sold"],
+          ru: "продавать",
+          uz: "sotmoq",
+        },
+        {
+          v1: "send",
+          v2: ["sent"],
+          v3: ["sent"],
+          ru: "отправлять",
+          uz: "yubormoq",
+        },
+        {
+          v1: "set",
+          v2: ["set"],
+          v3: ["set"],
+          ru: "устанавливать",
+          uz: "o'rnatmoq",
+        },
+        {
+          v1: "shoot",
+          v2: ["shot"],
+          v3: ["shot"],
+          ru: "стрелять",
+          uz: "otmoq",
+        },
+        {
+          v1: "show",
+          v2: ["showed"],
+          v3: ["shown"],
+          ru: "показывать",
+          uz: "ko'rsatmoq",
+        },
+        {
+          v1: "shut",
+          v2: ["shut"],
+          v3: ["shut"],
+          ru: "закрывать",
+          uz: "yopmoq",
+        },
+        {
+          v1: "sing",
+          v2: ["sang"],
+          v3: ["sung"],
+          ru: "петь",
+          uz: "qo'shiq aytmoq",
+        },
+        { v1: "sit", v2: ["sat"], v3: ["sat"], ru: "сидеть", uz: "o'tirmoq" },
+        {
+          v1: "sleep",
+          v2: ["slept"],
+          v3: ["slept"],
+          ru: "спать",
+          uz: "uxlamoq",
+        },
+        {
+          v1: "speak",
+          v2: ["spoke"],
+          v3: ["spoken"],
+          ru: "говорить",
+          uz: "gapirmoq",
+        },
+        {
+          v1: "spend",
+          v2: ["spent"],
+          v3: ["spent"],
+          ru: "тратить",
+          uz: "sarflamoq",
+        },
+        {
+          v1: "stand",
+          v2: ["stood"],
+          v3: ["stood"],
+          ru: "стоять",
+          uz: "turmoq",
+        },
+        {
+          v1: "steal",
+          v2: ["stole"],
+          v3: ["stolen"],
+          ru: "красть",
+          uz: "o'g'irlamoq",
+        },
+        { v1: "swim", v2: ["swam"], v3: ["swum"], ru: "плавать", uz: "suzmoq" },
+        { v1: "take", v2: ["took"], v3: ["taken"], ru: "брать", uz: "olmoq" },
+        {
+          v1: "teach",
+          v2: ["taught"],
+          v3: ["taught"],
+          ru: "учить",
+          uz: "o'rgatmoq",
+        },
+        {
+          v1: "tell",
+          v2: ["told"],
+          v3: ["told"],
+          ru: "рассказывать",
+          uz: "aytib bermoq",
+        },
+        {
+          v1: "think",
+          v2: ["thought"],
+          v3: ["thought"],
+          ru: "думать",
+          uz: "o'ylamoq",
+        },
+        {
+          v1: "throw",
+          v2: ["threw"],
+          v3: ["thrown"],
+          ru: "бросать",
+          uz: "tashlamoq",
+        },
+        {
+          v1: "understand",
+          v2: ["understood"],
+          v3: ["understood"],
+          ru: "понимать",
+          uz: "tushunmoq",
+        },
+        {
+          v1: "wake",
+          v2: ["woke"],
+          v3: ["woken"],
+          ru: "просыпаться",
+          uz: "uyg'onmoq",
+        },
+        { v1: "wear", v2: ["wore"], v3: ["worn"], ru: "носить", uz: "kiymoq" },
+        { v1: "win", v2: ["won"], v3: ["won"], ru: "выигрывать", uz: "yutmoq" },
+        {
+          v1: "write",
+          v2: ["wrote"],
+          v3: ["written"],
+          ru: "писать",
+          uz: "yozmoq",
+        },
+      ];
 
-/* ================= STATE ================= */
-let state = {
-  lang: "en",
-  tab: "theory",
-  view: {name:"grid"}, // grid | theory | types | quiz | result | verbsHome | verbsList | verbsGame | verbsResult
-  topic: null,
-  exType: null,
-  answers: {}, // idx -> selected value
-  checked: false,
-  verbsSearch: "",
-  game: null, // {order:[indices], pos:0, score:0, streak:0, bestStreak:0, checked:false, v2val:"", v3val:""}
-};
+      /* ================= STATE ================= */
+      let state = {
+        lang: "en",
+        tab: "theory",
+        view: { name: "grid" }, // grid | theory | types | quiz | result | verbsHome | verbsList | verbsGame | verbsResult
+        topic: null,
+        exType: null,
+        answers: {}, // idx -> selected value
+        checked: false,
+        verbsSearch: "",
+        game: null, // {order:[indices], pos:0, score:0, streak:0, bestStreak:0, checked:false, v2val:"", v3val:""}
+      };
 
-function t(){ return T[state.lang]; }
-function el(html){ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstChild; }
+      function t() {
+        return T[state.lang];
+      }
+      function el(html) {
+        const d = document.createElement("div");
+        d.innerHTML = html.trim();
+        return d.firstChild;
+      }
 
-/* ================= RENDER ================= */
-function render(){
-  const app = document.getElementById('app');
-  app.innerHTML = "";
-  app.appendChild(renderTopbar());
-  app.appendChild(renderTabs());
-  const view = document.createElement('div');
-  view.className = 'view';
-  view.appendChild(renderCurrentView());
-  app.appendChild(view);
-}
+      /* ================= RENDER ================= */
+      function render() {
+        const app = document.getElementById("app");
+        app.innerHTML = "";
+        app.appendChild(renderTopbar());
+        app.appendChild(renderTabs());
+        const view = document.createElement("div");
+        view.className = "view";
+        view.appendChild(renderCurrentView());
+        app.appendChild(view);
+      }
 
-function renderTopbar(){
-  const bar = el(`<div class="topbar">
+      function renderTopbar() {
+        const bar = el(`<div class="topbar">
     <div class="brand">
       <div class="mark">${t().title}</div>
       <div class="sub">${t().subtitle}</div>
     </div>
     <div class="langswitch">
-      ${["en","ru","uz"].map(l=>`<button data-lang="${l}" class="${state.lang===l?'active':''}">${l.toUpperCase()}</button>`).join("")}
+      ${["en", "ru", "uz"].map((l) => `<button data-lang="${l}" class="${state.lang === l ? "active" : ""}">${l.toUpperCase()}</button>`).join("")}
     </div>
   </div>`);
-  bar.querySelectorAll('button[data-lang]').forEach(b=>{
-    b.onclick = ()=>{ state.lang = b.dataset.lang; render(); };
-  });
-  return bar;
-}
+        bar.querySelectorAll("button[data-lang]").forEach((b) => {
+          b.onclick = () => {
+            state.lang = b.dataset.lang;
+            render();
+          };
+        });
+        return bar;
+      }
 
-function renderTabs(){
-  const bar = el(`<div class="tabs">
-    <button data-tab="theory" class="${state.tab==='theory'?'active':''}">${t().tabTheory}</button>
-    <button data-tab="practice" class="${state.tab==='practice'?'active':''}">${t().tabPractice}</button>
-    <button data-tab="verbs" class="${state.tab==='verbs'?'active':''}">${t().tabVerbs}</button>
+      function renderTabs() {
+        const bar = el(`<div class="tabs">
+    <button data-tab="theory" class="${state.tab === "theory" ? "active" : ""}">${t().tabTheory}</button>
+    <button data-tab="practice" class="${state.tab === "practice" ? "active" : ""}">${t().tabPractice}</button>
+    <button data-tab="verbs" class="${state.tab === "verbs" ? "active" : ""}">${t().tabVerbs}</button>
   </div>`);
-  bar.querySelectorAll('button[data-tab]').forEach(b=>{
-    b.onclick = ()=>{
-      state.tab = b.dataset.tab;
-      state.topic = null; state.exType = null;
-      state.view = state.tab === "verbs" ? {name:"verbsHome"} : {name:"grid"};
-      render();
-    };
-  });
-  return bar;
-}
+        bar.querySelectorAll("button[data-tab]").forEach((b) => {
+          b.onclick = () => {
+            state.tab = b.dataset.tab;
+            state.topic = null;
+            state.exType = null;
+            state.view =
+              state.tab === "verbs" ? { name: "verbsHome" } : { name: "grid" };
+            render();
+          };
+        });
+        return bar;
+      }
 
-function renderCurrentView(){
-  if (state.view.name === "grid") return renderGrid();
-  if (state.view.name === "theory") return renderTheoryPanel();
-  if (state.view.name === "types") return renderTypesPanel();
-  if (state.view.name === "quiz") return renderQuizPanel();
-  if (state.view.name === "result") return renderResultPanel();
-  if (state.view.name === "verbsHome") return renderVerbsHome();
-  if (state.view.name === "verbsList") return renderVerbsList();
-  if (state.view.name === "verbsGame") return renderVerbsGame();
-  if (state.view.name === "verbsResult") return renderVerbsResult();
-  return document.createElement('div');
-}
+      function renderCurrentView() {
+        if (state.view.name === "grid") return renderGrid();
+        if (state.view.name === "theory") return renderTheoryPanel();
+        if (state.view.name === "types") return renderTypesPanel();
+        if (state.view.name === "quiz") return renderQuizPanel();
+        if (state.view.name === "result") return renderResultPanel();
+        if (state.view.name === "verbsHome") return renderVerbsHome();
+        if (state.view.name === "verbsList") return renderVerbsList();
+        if (state.view.name === "verbsGame") return renderVerbsGame();
+        if (state.view.name === "verbsResult") return renderVerbsResult();
+        return document.createElement("div");
+      }
 
-function renderGrid(){
-  const wrap = document.createElement('div');
-  const label = state.tab==='theory' ? t().chooseTopicTheory : t().chooseTopicPractice;
-  wrap.appendChild(el(`<div class="section-label">${label}</div>`));
-  const grid = el(`<div class="folder-grid"></div>`);
-  TOPIC_ORDER.forEach(topicId=>{
-    const card = el(`<button class="folder-card ${TOPIC_CLASS[topicId]}">
+      function renderGrid() {
+        const wrap = document.createElement("div");
+        const label =
+          state.tab === "theory"
+            ? t().chooseTopicTheory
+            : t().chooseTopicPractice;
+        wrap.appendChild(el(`<div class="section-label">${label}</div>`));
+        const grid = el(`<div class="folder-grid"></div>`);
+        TOPIC_ORDER.forEach((topicId) => {
+          const card = el(`<button class="folder-card ${TOPIC_CLASS[topicId]}">
       <div class="folder-icon">${TOPIC_LETTER[topicId]}</div>
       <div class="fname">${t().topics[topicId]}</div>
     </button>`);
-    card.onclick = ()=>{
-      state.topic = topicId;
-      state.view = { name: state.tab==='theory' ? "theory" : "types" };
-      render();
-    };
-    grid.appendChild(card);
-  });
-  wrap.appendChild(grid);
-  return wrap;
-}
+          card.onclick = () => {
+            state.topic = topicId;
+            state.view = { name: state.tab === "theory" ? "theory" : "types" };
+            render();
+          };
+          grid.appendChild(card);
+        });
+        wrap.appendChild(grid);
+        return wrap;
+      }
 
-function backRow(label, onClick){
-  const row = el(`<div class="backrow">
+      function backRow(label, onClick) {
+        const row = el(`<div class="backrow">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <span>${label}</span>
   </div>`);
-  row.onclick = onClick;
-  return row;
-}
+        row.onclick = onClick;
+        return row;
+      }
 
-function renderTheoryPanel(){
-  const wrap = document.createElement('div');
-  wrap.className = 'panel';
-  wrap.appendChild(backRow(t().backToTopics, ()=>{ state.view={name:"grid"}; render(); }));
-  wrap.appendChild(el(`<h2 class="panel-title">${t().topics[state.topic]}</h2>`));
-  const chat = el(`<div class="chat"></div>`);
-  THEORY[state.topic][state.lang].forEach(block=>{
-    if (block.k === "text"){
-      const row = el(`<div class="teacher-row">
+      function renderTheoryPanel() {
+        const wrap = document.createElement("div");
+        wrap.className = "panel";
+        wrap.appendChild(
+          backRow(t().backToTopics, () => {
+            state.view = { name: "grid" };
+            render();
+          }),
+        );
+        wrap.appendChild(
+          el(`<h2 class="panel-title">${t().topics[state.topic]}</h2>`),
+        );
+        const chat = el(`<div class="chat"></div>`);
+        THEORY[state.topic][state.lang].forEach((block) => {
+          if (block.k === "text") {
+            const row = el(`<div class="teacher-row">
         <div class="avatar">Aa</div>
         <div class="bubble">${block.v}</div>
       </div>`);
-      chat.appendChild(row);
-    } else {
-      chat.appendChild(el(`<div class="bubble example">${block.v}</div>`));
-    }
-  });
-  wrap.appendChild(chat);
-  return wrap;
-}
+            chat.appendChild(row);
+          } else {
+            chat.appendChild(
+              el(`<div class="bubble example">${block.v}</div>`),
+            );
+          }
+        });
+        wrap.appendChild(chat);
+        return wrap;
+      }
 
-function renderTypesPanel(){
-  const wrap = document.createElement('div');
-  wrap.className = 'panel';
-  wrap.appendChild(backRow(t().backToTopics, ()=>{ state.view={name:"grid"}; render(); }));
-  wrap.appendChild(el(`<h2 class="panel-title">${t().topics[state.topic]}</h2>`));
-  wrap.appendChild(el(`<div class="section-label">${t().chooseExercise}</div>`));
-  const list = el(`<div class="type-list"></div>`);
-  const badgeColor = {quiz:"var(--accent)",fill:"var(--teal)",choice:"var(--amber)"};
-  const badgeLetter = {quiz:"1",fill:"2",choice:"3"};
-  ["quiz","fill","choice"].forEach(exType=>{
-    const card = el(`<button class="type-card">
+      function renderTypesPanel() {
+        const wrap = document.createElement("div");
+        wrap.className = "panel";
+        wrap.appendChild(
+          backRow(t().backToTopics, () => {
+            state.view = { name: "grid" };
+            render();
+          }),
+        );
+        wrap.appendChild(
+          el(`<h2 class="panel-title">${t().topics[state.topic]}</h2>`),
+        );
+        wrap.appendChild(
+          el(`<div class="section-label">${t().chooseExercise}</div>`),
+        );
+        const list = el(`<div class="type-list"></div>`);
+        const badgeColor = {
+          quiz: "var(--accent)",
+          fill: "var(--teal)",
+          choice: "var(--amber)",
+        };
+        const badgeLetter = { quiz: "1", fill: "2", choice: "3" };
+        ["quiz", "fill", "choice"].forEach((exType) => {
+          const card = el(`<button class="type-card">
       <div class="type-badge" style="background:${badgeColor[exType]}">${badgeLetter[exType]}</div>
       <div class="type-info">
         <div class="tname">${t().exTypes[exType]}</div>
@@ -1057,165 +2610,229 @@ function renderTypesPanel(){
       </div>
       <svg class="type-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>`);
-    card.onclick = ()=>{
-      state.exType = exType;
-      state.answers = {};
-      state.checked = false;
-      state.view = {name:"quiz"};
-      render();
-    };
-    list.appendChild(card);
-  });
-  wrap.appendChild(list);
-  return wrap;
-}
+          card.onclick = () => {
+            state.exType = exType;
+            state.answers = {};
+            state.checked = false;
+            state.view = { name: "quiz" };
+            render();
+          };
+          list.appendChild(card);
+        });
+        wrap.appendChild(list);
+        return wrap;
+      }
 
-function currentItems(){ return EX[state.topic][state.exType]; }
+      function currentItems() {
+        return EX[state.topic][state.exType];
+      }
 
-function renderQuizPanel(){
-  const wrap = document.createElement('div');
-  wrap.className = 'panel';
-  wrap.appendChild(backRow(t().backToTypes, ()=>{ state.view={name:"types"}; render(); }));
-  wrap.appendChild(el(`<h2 class="panel-title">${t().topics[state.topic]} · ${t().exTypes[state.exType]}</h2>`));
+      function renderQuizPanel() {
+        const wrap = document.createElement("div");
+        wrap.className = "panel";
+        wrap.appendChild(
+          backRow(t().backToTypes, () => {
+            state.view = { name: "types" };
+            render();
+          }),
+        );
+        wrap.appendChild(
+          el(
+            `<h2 class="panel-title">${t().topics[state.topic]} · ${t().exTypes[state.exType]}</h2>`,
+          ),
+        );
 
-  const items = currentItems();
-  const answeredCount = Object.keys(state.answers).length;
-  wrap.appendChild(el(`<div class="progress-wrap">
-    <div class="progress-bar"><div class="progress-fill" style="width:${(answeredCount/items.length)*100}%"></div></div>
+        const items = currentItems();
+        const answeredCount = Object.keys(state.answers).length;
+        wrap.appendChild(
+          el(`<div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" style="width:${(answeredCount / items.length) * 100}%"></div></div>
     <div class="progress-text">${answeredCount}/${items.length}</div>
-  </div>`));
+  </div>`),
+        );
 
-  items.forEach((item, idx)=>{
-    wrap.appendChild(renderQuestion(item, idx));
-  });
+        items.forEach((item, idx) => {
+          wrap.appendChild(renderQuestion(item, idx));
+        });
 
-  const actionBar = el(`<div class="action-bar"></div>`);
-  if (!state.checked){
-    const btn = el(`<button class="btn">${t().check}</button>`);
-    btn.onclick = ()=>{ state.checked = true; render(); scoreIntoResult(); };
-    actionBar.appendChild(btn);
-  } else {
-    const row = el(`<div class="btn-row">
+        const actionBar = el(`<div class="action-bar"></div>`);
+        if (!state.checked) {
+          const btn = el(`<button class="btn">${t().check}</button>`);
+          btn.onclick = () => {
+            state.checked = true;
+            render();
+            scoreIntoResult();
+          };
+          actionBar.appendChild(btn);
+        } else {
+          const row = el(`<div class="btn-row">
       <button class="btn ghost" id="retryBtn">${t().retry}</button>
       <button class="btn" id="viewResultBtn">${t().score}</button>
     </div>`);
-    actionBar.appendChild(row);
-  }
-  wrap.appendChild(actionBar);
+          actionBar.appendChild(row);
+        }
+        wrap.appendChild(actionBar);
 
-  if (state.checked){
-    wrap.querySelector('#retryBtn').onclick = ()=>{ state.answers={}; state.checked=false; render(); };
-    wrap.querySelector('#viewResultBtn').onclick = ()=>{ state.view={name:"result"}; render(); };
-  }
+        if (state.checked) {
+          wrap.querySelector("#retryBtn").onclick = () => {
+            state.answers = {};
+            state.checked = false;
+            render();
+          };
+          wrap.querySelector("#viewResultBtn").onclick = () => {
+            state.view = { name: "result" };
+            render();
+          };
+        }
 
-  return wrap;
-}
-
-function isCorrect(item, idx){
-  const val = state.answers[idx];
-  if (val === undefined) return false;
-  if (item.accept){
-    return item.accept.map(a=>a.toLowerCase().trim()).includes(String(val).toLowerCase().trim());
-  }
-  return val === item.correct;
-}
-
-function renderQuestion(item, idx){
-  const qcard = el(`<div class="qcard"></div>`);
-  qcard.appendChild(el(`<div class="qnum">${t().questionOf(idx+1, currentItems().length)}</div>`));
-  qcard.appendChild(el(`<div class="qtext">${item.q.replace("___",'<span class="blank">___</span>')}</div>`));
-
-  if (item.accept){
-    const row = el(`<div class="fill-row"></div>`);
-    const input = el(`<input type="text" class="fill-input" placeholder="${t().typeAnswer}">`);
-    if (state.answers[idx] !== undefined) input.value = state.answers[idx];
-    input.disabled = state.checked;
-    input.oninput = ()=>{ state.answers[idx] = input.value; syncProgress(); };
-    if (state.checked){
-      input.classList.add(isCorrect(item, idx) ? "correct" : "incorrect");
-    }
-    row.appendChild(input);
-    qcard.appendChild(row);
-  } else {
-    const isChips = state.exType === "choice";
-    const optList = el(`<div class="opt-list ${isChips?'chips':''}"></div>`);
-    item.options.forEach((opt, oIdx)=>{
-      const optBtn = el(`<button class="opt">${opt}</button>`);
-      if (state.answers[idx] === oIdx) optBtn.classList.add("selected");
-      if (state.checked){
-        optBtn.classList.add("locked");
-        if (oIdx === item.correct) optBtn.classList.add("correct");
-        else if (state.answers[idx] === oIdx) optBtn.classList.add("incorrect");
+        return wrap;
       }
-      optBtn.onclick = ()=>{
-        if (state.checked) return;
-        state.answers[idx] = oIdx;
-        render();
-      };
-      optList.appendChild(optBtn);
-    });
-    qcard.appendChild(optList);
-  }
 
-  if (state.checked){
-    const ok = isCorrect(item, idx);
-    const badge = el(`<div class="qbadge ${ok?'correct':'incorrect'}">
+      function isCorrect(item, idx) {
+        const val = state.answers[idx];
+        if (val === undefined) return false;
+        if (item.accept) {
+          return item.accept
+            .map((a) => a.toLowerCase().trim())
+            .includes(String(val).toLowerCase().trim());
+        }
+        return val === item.correct;
+      }
+
+      function renderQuestion(item, idx) {
+        const qcard = el(`<div class="qcard"></div>`);
+        qcard.appendChild(
+          el(
+            `<div class="qnum">${t().questionOf(idx + 1, currentItems().length)}</div>`,
+          ),
+        );
+        qcard.appendChild(
+          el(
+            `<div class="qtext">${item.q.replace("___", '<span class="blank">___</span>')}</div>`,
+          ),
+        );
+
+        if (item.accept) {
+          const row = el(`<div class="fill-row"></div>`);
+          const input = el(
+            `<input type="text" class="fill-input" placeholder="${t().typeAnswer}">`,
+          );
+          if (state.answers[idx] !== undefined)
+            input.value = state.answers[idx];
+          input.disabled = state.checked;
+          input.oninput = () => {
+            state.answers[idx] = input.value;
+            syncProgress();
+          };
+          if (state.checked) {
+            input.classList.add(isCorrect(item, idx) ? "correct" : "incorrect");
+          }
+          row.appendChild(input);
+          qcard.appendChild(row);
+        } else {
+          const isChips = state.exType === "choice";
+          const optList = el(
+            `<div class="opt-list ${isChips ? "chips" : ""}"></div>`,
+          );
+          item.options.forEach((opt, oIdx) => {
+            const optBtn = el(`<button class="opt">${opt}</button>`);
+            if (state.answers[idx] === oIdx) optBtn.classList.add("selected");
+            if (state.checked) {
+              optBtn.classList.add("locked");
+              if (oIdx === item.correct) optBtn.classList.add("correct");
+              else if (state.answers[idx] === oIdx)
+                optBtn.classList.add("incorrect");
+            }
+            optBtn.onclick = () => {
+              if (state.checked) return;
+              state.answers[idx] = oIdx;
+              render();
+            };
+            optList.appendChild(optBtn);
+          });
+          qcard.appendChild(optList);
+        }
+
+        if (state.checked) {
+          const ok = isCorrect(item, idx);
+          const badge = el(`<div class="qbadge ${ok ? "correct" : "incorrect"}">
       <span>${ok ? t().correct : t().incorrect}</span>
       ${!ok ? `<span class="why">?</span>` : ``}
     </div>`);
-    if (!ok){
-      badge.querySelector('.why').onclick = ()=> openModal(item.rule);
-    }
-    qcard.appendChild(badge);
-  }
+          if (!ok) {
+            badge.querySelector(".why").onclick = () => openModal(item.rule);
+          }
+          qcard.appendChild(badge);
+        }
 
-  return qcard;
-}
+        return qcard;
+      }
 
-function syncProgress(){
-  const bar = document.querySelector('.progress-fill');
-  const text = document.querySelector('.progress-text');
-  if (!bar) return;
-  const items = currentItems();
-  const answeredCount = Object.keys(state.answers).filter(k=>state.answers[k]!==undefined && state.answers[k]!=="").length;
-  bar.style.width = (answeredCount/items.length)*100 + "%";
-  if (text) text.textContent = `${answeredCount}/${items.length}`;
-}
+      function syncProgress() {
+        const bar = document.querySelector(".progress-fill");
+        const text = document.querySelector(".progress-text");
+        if (!bar) return;
+        const items = currentItems();
+        const answeredCount = Object.keys(state.answers).filter(
+          (k) => state.answers[k] !== undefined && state.answers[k] !== "",
+        ).length;
+        bar.style.width = (answeredCount / items.length) * 100 + "%";
+        if (text) text.textContent = `${answeredCount}/${items.length}`;
+      }
 
-let lastScore = {correct:0,total:0};
-function scoreIntoResult(){
-  const items = currentItems();
-  let correct = 0;
-  items.forEach((item, idx)=>{ if (isCorrect(item, idx)) correct++; });
-  lastScore = {correct, total: items.length};
-}
+      let lastScore = { correct: 0, total: 0 };
+      function scoreIntoResult() {
+        const items = currentItems();
+        let correct = 0;
+        items.forEach((item, idx) => {
+          if (isCorrect(item, idx)) correct++;
+        });
+        lastScore = { correct, total: items.length };
+      }
 
-function renderResultPanel(){
-  const wrap = document.createElement('div');
-  wrap.className = 'panel';
-  wrap.appendChild(backRow(t().backToTypes, ()=>{ state.view={name:"types"}; render(); }));
-  const pct = lastScore.total ? lastScore.correct/lastScore.total : 0;
-  wrap.appendChild(el(`<div class="result-card">
-    <div class="result-title">${pct>=0.7 ? t().resultGood : t().resultOk}</div>
+      function renderResultPanel() {
+        const wrap = document.createElement("div");
+        wrap.className = "panel";
+        wrap.appendChild(
+          backRow(t().backToTypes, () => {
+            state.view = { name: "types" };
+            render();
+          }),
+        );
+        const pct = lastScore.total ? lastScore.correct / lastScore.total : 0;
+        wrap.appendChild(
+          el(`<div class="result-card">
+    <div class="result-title">${pct >= 0.7 ? t().resultGood : t().resultOk}</div>
     <div class="result-score">${lastScore.correct}<span style="color:var(--ink-soft);font-size:24px;"> ${t().of} ${lastScore.total}</span></div>
     <div class="result-sub">${t().topics[state.topic]} · ${t().exTypes[state.exType]}</div>
-  </div>`));
-  const row = el(`<div class="btn-row">
+  </div>`),
+        );
+        const row = el(`<div class="btn-row">
     <button class="btn ghost" id="retryBtn2">${t().retry}</button>
     <button class="btn" id="toTypesBtn">${t().backToTypes}</button>
   </div>`);
-  wrap.appendChild(row);
-  wrap.querySelector('#retryBtn2').onclick = ()=>{ state.answers={}; state.checked=false; state.view={name:"quiz"}; render(); };
-  wrap.querySelector('#toTypesBtn').onclick = ()=>{ state.view={name:"types"}; render(); };
-  return wrap;
-}
+        wrap.appendChild(row);
+        wrap.querySelector("#retryBtn2").onclick = () => {
+          state.answers = {};
+          state.checked = false;
+          state.view = { name: "quiz" };
+          render();
+        };
+        wrap.querySelector("#toTypesBtn").onclick = () => {
+          state.view = { name: "types" };
+          render();
+        };
+        return wrap;
+      }
 
-/* ================= VERBS TAB ================= */
-function renderVerbsHome(){
-  const wrap = document.createElement('div');
-  wrap.appendChild(el(`<div class="section-label">${t().verbsHomeLabel}</div>`));
-  const list = el(`<div class="type-list"></div>`);
-  const listCard = el(`<button class="type-card">
+      /* ================= VERBS TAB ================= */
+      function renderVerbsHome() {
+        const wrap = document.createElement("div");
+        wrap.appendChild(
+          el(`<div class="section-label">${t().verbsHomeLabel}</div>`),
+        );
+        const list = el(`<div class="type-list"></div>`);
+        const listCard = el(`<button class="type-card">
     <div class="type-badge" style="background:var(--teal)">A–Z</div>
     <div class="type-info">
       <div class="tname">${t().verbsListTitle}</div>
@@ -1223,8 +2840,11 @@ function renderVerbsHome(){
     </div>
     <svg class="type-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>`);
-  listCard.onclick = ()=>{ state.view={name:"verbsList"}; render(); };
-  const gameCard = el(`<button class="type-card">
+        listCard.onclick = () => {
+          state.view = { name: "verbsList" };
+          render();
+        };
+        const gameCard = el(`<button class="type-card">
     <div class="type-badge" style="background:var(--accent)">🔥</div>
     <div class="type-info">
       <div class="tname">${t().verbsGameTitle}</div>
@@ -1232,175 +2852,283 @@ function renderVerbsHome(){
     </div>
     <svg class="type-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>`);
-  gameCard.onclick = ()=>{ state.game = null; state.view={name:"verbsGame"}; render(); };
-  list.appendChild(listCard);
-  list.appendChild(gameCard);
-  wrap.appendChild(list);
-  return wrap;
-}
+        gameCard.onclick = () => {
+          state.game = null;
+          state.view = { name: "verbsGame" };
+          render();
+        };
+        list.appendChild(listCard);
+        list.appendChild(gameCard);
+        wrap.appendChild(list);
+        return wrap;
+      }
 
-function renderVerbsList(){
-  const wrap = document.createElement('div');
-  wrap.className = 'panel';
-  wrap.appendChild(backRow(t().backToVerbsHome, ()=>{ state.view={name:"verbsHome"}; render(); }));
-  wrap.appendChild(el(`<h2 class="panel-title">${t().verbsListTitle}</h2>`));
-  const search = el(`<input type="text" class="fill-input" style="margin-bottom:12px;width:100%;" placeholder="${t().searchPlaceholder}">`);
-  search.value = state.verbsSearch;
-  search.oninput = ()=>{ state.verbsSearch = search.value; renderVerbRows(rowsWrap); };
-  wrap.appendChild(search);
+      function renderVerbsList() {
+        const wrap = document.createElement("div");
+        wrap.className = "panel";
+        wrap.appendChild(
+          backRow(t().backToVerbsHome, () => {
+            state.view = { name: "verbsHome" };
+            render();
+          }),
+        );
+        wrap.appendChild(
+          el(`<h2 class="panel-title">${t().verbsListTitle}</h2>`),
+        );
+        const search = el(
+          `<input type="text" class="fill-input" style="margin-bottom:12px;width:100%;" placeholder="${t().searchPlaceholder}">`,
+        );
+        search.value = state.verbsSearch;
+        search.oninput = () => {
+          state.verbsSearch = search.value;
+          renderVerbRows(rowsWrap);
+        };
+        wrap.appendChild(search);
 
-  const header = el(`<div class="verb-row verb-head">
+        const header = el(`<div class="verb-row verb-head">
     <span>${t().colV1}</span><span>${t().colV2}</span><span>${t().colV3}</span><span>${t().colMeaning}</span>
   </div>`);
-  wrap.appendChild(header);
-  const rowsWrap = el(`<div class="verb-rows"></div>`);
-  wrap.appendChild(rowsWrap);
-  renderVerbRows(rowsWrap);
-  return wrap;
-}
+        wrap.appendChild(header);
+        const rowsWrap = el(`<div class="verb-rows"></div>`);
+        wrap.appendChild(rowsWrap);
+        renderVerbRows(rowsWrap);
+        return wrap;
+      }
 
-function renderVerbRows(container){
-  container.innerHTML = "";
-  const q = state.verbsSearch.trim().toLowerCase();
-  const filtered = VERBS.filter(v=>{
-    if (!q) return true;
-    return v.v1.includes(q) || v.v2.join(" ").includes(q) || v.v3.join(" ").includes(q) || v.ru.toLowerCase().includes(q) || v.uz.toLowerCase().includes(q);
-  });
-  if (filtered.length === 0){
-    container.appendChild(el(`<div class="verb-empty">—</div>`));
-    return;
-  }
-  filtered.forEach(v=>{
-    container.appendChild(el(`<div class="verb-row">
+      function renderVerbRows(container) {
+        container.innerHTML = "";
+        const q = state.verbsSearch.trim().toLowerCase();
+        const filtered = VERBS.filter((v) => {
+          if (!q) return true;
+          return (
+            v.v1.includes(q) ||
+            v.v2.join(" ").includes(q) ||
+            v.v3.join(" ").includes(q) ||
+            v.ru.toLowerCase().includes(q) ||
+            v.uz.toLowerCase().includes(q)
+          );
+        });
+        if (filtered.length === 0) {
+          container.appendChild(el(`<div class="verb-empty">—</div>`));
+          return;
+        }
+        filtered.forEach((v) => {
+          container.appendChild(
+            el(`<div class="verb-row">
       <span class="v1">${v.v1}</span><span>${v.v2.join(" / ")}</span><span>${v.v3.join(" / ")}</span><span class="vm">${v.ru} / ${v.uz}</span>
-    </div>`));
-  });
-}
+    </div>`),
+          );
+        });
+      }
 
-function startVerbGame(){
-  const idxs = VERBS.map((_,i)=>i);
-  for (let i=idxs.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [idxs[i],idxs[j]]=[idxs[j],idxs[i]]; }
-  state.game = { order: idxs.slice(0,12), pos:0, score:0, streak:0, bestStreak:0, checked:false, v2val:"", v3val:"" };
-  render();
-}
+      function startVerbGame() {
+        const idxs = VERBS.map((_, i) => i);
+        for (let i = idxs.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [idxs[i], idxs[j]] = [idxs[j], idxs[i]];
+        }
+        state.game = {
+          order: idxs.slice(0, 12),
+          pos: 0,
+          score: 0,
+          streak: 0,
+          bestStreak: 0,
+          checked: false,
+          v2val: "",
+          v3val: "",
+        };
+        render();
+      }
 
-function renderVerbsGame(){
-  const wrap = document.createElement('div');
-  wrap.className = 'panel';
-  wrap.appendChild(backRow(t().backToVerbsHome, ()=>{ state.view={name:"verbsHome"}; render(); }));
-  wrap.appendChild(el(`<h2 class="panel-title">${t().verbsGameTitle}</h2>`));
+      function renderVerbsGame() {
+        const wrap = document.createElement("div");
+        wrap.className = "panel";
+        wrap.appendChild(
+          backRow(t().backToVerbsHome, () => {
+            state.view = { name: "verbsHome" };
+            render();
+          }),
+        );
+        wrap.appendChild(
+          el(`<h2 class="panel-title">${t().verbsGameTitle}</h2>`),
+        );
 
-  if (!state.game){
-    wrap.appendChild(el(`<div class="bubble" style="max-width:100%;margin-bottom:16px;">${t().verbsGameDesc}</div>`));
-    const startBtn = el(`<button class="btn">${t().startGame}</button>`);
-    startBtn.onclick = startVerbGame;
-    wrap.appendChild(startBtn);
-    return wrap;
-  }
+        if (!state.game) {
+          wrap.appendChild(
+            el(
+              `<div class="bubble" style="max-width:100%;margin-bottom:16px;">${t().verbsGameDesc}</div>`,
+            ),
+          );
+          const startBtn = el(`<button class="btn">${t().startGame}</button>`);
+          startBtn.onclick = startVerbGame;
+          wrap.appendChild(startBtn);
+          return wrap;
+        }
 
-  const g = state.game;
-  const verb = VERBS[g.order[g.pos]];
+        const g = state.game;
+        const verb = VERBS[g.order[g.pos]];
 
-  wrap.appendChild(el(`<div class="progress-wrap">
-    <div class="progress-bar"><div class="progress-fill" style="width:${(g.pos/g.order.length)*100}%"></div></div>
-    <div class="progress-text">${t().roundOf(g.pos+1, g.order.length)}</div>
-  </div>`));
+        wrap.appendChild(
+          el(`<div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" style="width:${(g.pos / g.order.length) * 100}%"></div></div>
+    <div class="progress-text">${t().roundOf(g.pos + 1, g.order.length)}</div>
+  </div>`),
+        );
 
-  const streakPill = el(`<div class="streak-pill">🔥 ${t().streak}: ${g.streak}</div>`);
-  wrap.appendChild(streakPill);
+        const streakPill = el(
+          `<div class="streak-pill">🔥 ${t().streak}: ${g.streak}</div>`,
+        );
+        wrap.appendChild(streakPill);
 
-  const card = el(`<div class="verb-card"><div class="verb-v1">${verb.v1}</div></div>`);
-  wrap.appendChild(card);
+        const card = el(
+          `<div class="verb-card"><div class="verb-v1">${verb.v1}</div></div>`,
+        );
+        wrap.appendChild(card);
 
-  const v2ok = g.checked && verb.v2.map(x=>x.toLowerCase()).includes(g.v2val.trim().toLowerCase());
-  const v3ok = g.checked && verb.v3.map(x=>x.toLowerCase()).includes(g.v3val.trim().toLowerCase());
+        const v2ok =
+          g.checked &&
+          verb.v2
+            .map((x) => x.toLowerCase())
+            .includes(g.v2val.trim().toLowerCase());
+        const v3ok =
+          g.checked &&
+          verb.v3
+            .map((x) => x.toLowerCase())
+            .includes(g.v3val.trim().toLowerCase());
 
-  const field2 = el(`<div style="margin-bottom:10px;">
+        const field2 = el(`<div style="margin-bottom:10px;">
     <div class="section-label" style="margin:0 0 6px 2px;">${t().inputV2}</div>
     <input type="text" class="fill-input" style="width:100%;">
   </div>`);
-  const in2 = field2.querySelector('input');
-  in2.value = g.v2val; in2.disabled = g.checked;
-  in2.oninput = ()=>{ g.v2val = in2.value; };
-  if (g.checked) in2.classList.add(v2ok ? "correct" : "incorrect");
-  wrap.appendChild(field2);
+        const in2 = field2.querySelector("input");
+        in2.value = g.v2val;
+        in2.disabled = g.checked;
+        in2.oninput = () => {
+          g.v2val = in2.value;
+        };
+        if (g.checked) in2.classList.add(v2ok ? "correct" : "incorrect");
+        wrap.appendChild(field2);
 
-  const field3 = el(`<div style="margin-bottom:6px;">
+        const field3 = el(`<div style="margin-bottom:6px;">
     <div class="section-label" style="margin:0 0 6px 2px;">${t().inputV3}</div>
     <input type="text" class="fill-input" style="width:100%;">
   </div>`);
-  const in3 = field3.querySelector('input');
-  in3.value = g.v3val; in3.disabled = g.checked;
-  in3.oninput = ()=>{ g.v3val = in3.value; };
-  if (g.checked) in3.classList.add(v3ok ? "correct" : "incorrect");
-  wrap.appendChild(field3);
+        const in3 = field3.querySelector("input");
+        in3.value = g.v3val;
+        in3.disabled = g.checked;
+        in3.oninput = () => {
+          g.v3val = in3.value;
+        };
+        if (g.checked) in3.classList.add(v3ok ? "correct" : "incorrect");
+        wrap.appendChild(field3);
 
-  if (g.checked && !(v2ok && v3ok)){
-    wrap.appendChild(el(`<div class="qbadge incorrect" style="margin-bottom:10px;">${t().correctAnswer}: ${verb.v2.join(" / ")} — ${verb.v3.join(" / ")}</div>`));
-  }
+        if (g.checked && !(v2ok && v3ok)) {
+          wrap.appendChild(
+            el(
+              `<div class="qbadge incorrect" style="margin-bottom:10px;">${t().correctAnswer}: ${verb.v2.join(" / ")} — ${verb.v3.join(" / ")}</div>`,
+            ),
+          );
+        }
 
-  const actionBar = el(`<div class="action-bar"></div>`);
-  if (!g.checked){
-    const btn = el(`<button class="btn">${t().check}</button>`);
-    btn.onclick = ()=>{
-      g.checked = true;
-      const ok = verb.v2.map(x=>x.toLowerCase()).includes(g.v2val.trim().toLowerCase()) &&
-                 verb.v3.map(x=>x.toLowerCase()).includes(g.v3val.trim().toLowerCase());
-      if (ok){ g.score++; g.streak++; g.bestStreak = Math.max(g.bestStreak, g.streak); }
-      else { g.streak = 0; }
-      render();
-    };
-    actionBar.appendChild(btn);
-  } else {
-    const isLast = g.pos === g.order.length - 1;
-    const btn = el(`<button class="btn">${isLast ? t().finish : t().next}</button>`);
-    btn.onclick = ()=>{
-      if (isLast){ state.view = {name:"verbsResult"}; }
-      else { g.pos++; g.checked=false; g.v2val=""; g.v3val=""; }
-      render();
-    };
-    actionBar.appendChild(btn);
-  }
-  wrap.appendChild(actionBar);
-  return wrap;
-}
+        const actionBar = el(`<div class="action-bar"></div>`);
+        if (!g.checked) {
+          const btn = el(`<button class="btn">${t().check}</button>`);
+          btn.onclick = () => {
+            g.checked = true;
+            const ok =
+              verb.v2
+                .map((x) => x.toLowerCase())
+                .includes(g.v2val.trim().toLowerCase()) &&
+              verb.v3
+                .map((x) => x.toLowerCase())
+                .includes(g.v3val.trim().toLowerCase());
+            if (ok) {
+              g.score++;
+              g.streak++;
+              g.bestStreak = Math.max(g.bestStreak, g.streak);
+            } else {
+              g.streak = 0;
+            }
+            render();
+          };
+          actionBar.appendChild(btn);
+        } else {
+          const isLast = g.pos === g.order.length - 1;
+          const btn = el(
+            `<button class="btn">${isLast ? t().finish : t().next}</button>`,
+          );
+          btn.onclick = () => {
+            if (isLast) {
+              state.view = { name: "verbsResult" };
+            } else {
+              g.pos++;
+              g.checked = false;
+              g.v2val = "";
+              g.v3val = "";
+            }
+            render();
+          };
+          actionBar.appendChild(btn);
+        }
+        wrap.appendChild(actionBar);
+        return wrap;
+      }
 
-function renderVerbsResult(){
-  const wrap = document.createElement('div');
-  wrap.className = 'panel';
-  wrap.appendChild(backRow(t().backToVerbsHome, ()=>{ state.game=null; state.view={name:"verbsHome"}; render(); }));
-  const g = state.game;
-  const pct = g.order.length ? g.score/g.order.length : 0;
-  wrap.appendChild(el(`<div class="result-card">
-    <div class="result-title">${pct>=0.7 ? t().resultGood : t().resultOk}</div>
+      function renderVerbsResult() {
+        const wrap = document.createElement("div");
+        wrap.className = "panel";
+        wrap.appendChild(
+          backRow(t().backToVerbsHome, () => {
+            state.game = null;
+            state.view = { name: "verbsHome" };
+            render();
+          }),
+        );
+        const g = state.game;
+        const pct = g.order.length ? g.score / g.order.length : 0;
+        wrap.appendChild(
+          el(`<div class="result-card">
+    <div class="result-title">${pct >= 0.7 ? t().resultGood : t().resultOk}</div>
     <div class="result-score">${g.score}<span style="color:var(--ink-soft);font-size:24px;"> ${t().of} ${g.order.length}</span></div>
     <div class="result-sub">🔥 ${t().streak}: ${g.bestStreak}</div>
-  </div>`));
-  const row = el(`<div class="btn-row">
+  </div>`),
+        );
+        const row = el(`<div class="btn-row">
     <button class="btn ghost" id="verbsPlayAgain">${t().playAgain}</button>
     <button class="btn" id="verbsMenuBtn">${t().backToVerbsHome}</button>
   </div>`);
-  wrap.appendChild(row);
-  wrap.querySelector('#verbsPlayAgain').onclick = ()=>{ startVerbGame(); state.view={name:"verbsGame"}; render(); };
-  wrap.querySelector('#verbsMenuBtn').onclick = ()=>{ state.game=null; state.view={name:"verbsHome"}; render(); };
-  return wrap;
-}
+        wrap.appendChild(row);
+        wrap.querySelector("#verbsPlayAgain").onclick = () => {
+          startVerbGame();
+          state.view = { name: "verbsGame" };
+          render();
+        };
+        wrap.querySelector("#verbsMenuBtn").onclick = () => {
+          state.game = null;
+          state.view = { name: "verbsHome" };
+          render();
+        };
+        return wrap;
+      }
 
-function openModal(ruleKey){
-  const ruleText = RULES[state.topic][ruleKey][state.lang];
-  const overlay = el(`<div class="modal-overlay">
+      function openModal(ruleKey) {
+        const ruleText = RULES[state.topic][ruleKey][state.lang];
+        const overlay = el(`<div class="modal-overlay">
     <div class="modal">
       <h3>${t().why}</h3>
       <p>${ruleText}</p>
       <button class="close-btn">${t().close}</button>
     </div>
   </div>`);
-  overlay.onclick = (e)=>{ if (e.target === overlay) document.body.removeChild(overlay); };
-  overlay.querySelector('.close-btn').onclick = ()=> document.body.removeChild(overlay);
-  document.body.appendChild(overlay);
-}
+        overlay.onclick = (e) => {
+          if (e.target === overlay) document.body.removeChild(overlay);
+        };
+        overlay.querySelector(".close-btn").onclick = () =>
+          document.body.removeChild(overlay);
+        document.body.appendChild(overlay);
+      }
 
-render();
-</script>
-</body>
+      render();
+    </script>
+  </body>
 </html>
