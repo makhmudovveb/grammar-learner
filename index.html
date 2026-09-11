@@ -275,6 +275,30 @@
         border-left: 3px solid var(--teal);
         color: #12463d;
       }
+      .bubble.formula {
+        background: var(--amber-soft);
+        border-color: transparent;
+        border-left: 3px solid var(--amber);
+        color: #5c3f0d;
+        font-family: "Sora", sans-serif;
+        font-weight: 600;
+        font-size: 13.5px;
+        letter-spacing: 0.01em;
+      }
+      .bubble.formula .flabel {
+        display: inline-block;
+        font-family: "Inter", sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--amber);
+        margin-right: 6px;
+      }
+      .bubble.formula .fline {
+        display: block;
+        margin: 3px 0;
+      }
       .bubble b {
         font-family: "Sora", sans-serif;
       }
@@ -920,6 +944,10 @@
           en: [
             {
               k: "text",
+              v: "Formulas: Zero → If + S + V1 (present simple), S + V1 (present simple). First → If + S + V1 (present simple), S + will + V1 (base form).",
+            },
+            {
+              k: "text",
               v: "Zero Conditional talks about things that are always true — facts, science, general truths. Formula: If + Present Simple, ... Present Simple.",
             },
             { k: "example", v: "If you heat water to 100°C, it boils." },
@@ -936,6 +964,10 @@
             },
           ],
           ru: [
+            {
+              k: "text",
+              v: "Формулы: Zero → If + S + V1 (present simple), S + V1 (present simple). First → If + S + V1 (present simple), S + will + V1 (базовая форма).",
+            },
             {
               k: "text",
               v: "Zero Conditional используется для фактов и законов природы — того, что всегда истинно. Формула: If + Present Simple, ... Present Simple.",
@@ -966,6 +998,10 @@
             },
           ],
           uz: [
+            {
+              k: "text",
+              v: "Formulalar: Zero → If + S + V1 (present simple), S + V1 (present simple). First → If + S + V1 (present simple), S + will + V1 (bosh shakl).",
+            },
             {
               k: "text",
               v: "Zero Conditional har doim to'g'ri bo'lgan faktlar va tabiat qonunlari uchun ishlatiladi. Formula: If + Present Simple, ... Present Simple.",
@@ -1000,27 +1036,51 @@
           en: [
             {
               k: "text",
-              v: "Past Simple describes a completed action at a specific time in the past.",
+              v: "Past Simple describes a completed action at a specific time in the past. Formula: S + V2 + (object).",
+            },
+            {
+              k: "formula",
+              v: "<span class='flabel'>Past Simple</span><span class='fline'>+ S + V2 (regular: V+ed)</span><span class='fline'>– S + did not (didn't) + V1</span><span class='fline'>? Did + S + V1 ?</span>",
             },
             {
               k: "example",
               v: "I ate breakfast at 7 am. / She went to Paris last year.",
             },
             {
+              k: "example",
+              v: "I didn't eat breakfast. / Did she go to Paris last year?",
+            },
+            {
               k: "text",
-              v: "Past Continuous describes an action in progress at a moment in the past, often as background for another action, or with 'while'.",
+              v: "Past Continuous describes an action in progress at a moment in the past, often as background for another action, or with 'while'. Formula: S + was/were + V-ing + (object).",
+            },
+            {
+              k: "formula",
+              v: "<span class='flabel'>Past Continuous</span><span class='fline'>+ S + was/were + V-ing</span><span class='fline'>– S + was/were + not + V-ing</span><span class='fline'>? Was/Were + S + V-ing ?</span>",
             },
             {
               k: "example",
               v: "I was eating breakfast at 7 am. / While I was cooking, she was cleaning.",
             },
             {
+              k: "example",
+              v: "I wasn't sleeping at 10 pm. / Were you working at 9 am?",
+            },
+            {
               k: "text",
-              v: "Past Perfect describes an action that finished before another moment in the past — 'the past of the past'.",
+              v: "Past Perfect describes an action that finished before another moment in the past — 'the past of the past'. Formula: S + had + V3 + (object).",
+            },
+            {
+              k: "formula",
+              v: "<span class='flabel'>Past Perfect</span><span class='fline'>+ S + had + V3</span><span class='fline'>– S + had not (hadn't) + V3</span><span class='fline'>? Had + S + V3 ?</span>",
             },
             {
               k: "example",
               v: "I had eaten breakfast before she arrived. / When I arrived, she had already left.",
+            },
+            {
+              k: "example",
+              v: "She hadn't finished the report. / Had you met him before that day?",
             },
             {
               k: "text",
@@ -1030,27 +1090,51 @@
           ru: [
             {
               k: "text",
-              v: "Past Simple — законченное действие в конкретный момент прошлого.",
+              v: "Past Simple — законченное действие в конкретный момент прошлого. Формула: S + V2 + (дополнение).",
+            },
+            {
+              k: "formula",
+              v: "<span class='flabel'>Past Simple</span><span class='fline'>+ S + V2 (правильные: V+ed)</span><span class='fline'>– S + did not (didn't) + V1</span><span class='fline'>? Did + S + V1 ?</span>",
             },
             {
               k: "example",
               v: "I ate breakfast at 7 am. (Я позавтракал в 7 утра.)",
             },
             {
+              k: "example",
+              v: "I didn't eat breakfast. (Я не завтракал.) / Did she go to Paris last year? (Она ездила в Париж в прошлом году?)",
+            },
+            {
               k: "text",
-              v: "Past Continuous — действие было в процессе в определённый момент прошлого, часто как фон для другого события или со словом 'while'.",
+              v: "Past Continuous — действие было в процессе в определённый момент прошлого, часто как фон для другого события или со словом 'while'. Формула: S + was/were + V-ing + (дополнение).",
+            },
+            {
+              k: "formula",
+              v: "<span class='flabel'>Past Continuous</span><span class='fline'>+ S + was/were + V-ing</span><span class='fline'>– S + was/were + not + V-ing</span><span class='fline'>? Was/Were + S + V-ing ?</span>",
             },
             {
               k: "example",
               v: "While I was cooking, she was cleaning. (Пока я готовил, она убирала.)",
             },
             {
+              k: "example",
+              v: "I wasn't sleeping at 10 pm. (Я не спал в 10 вечера.) / Were you working at 9 am? (Ты работал в 9 утра?)",
+            },
+            {
               k: "text",
-              v: "Past Perfect — действие завершилось ДО другого момента в прошлом — 'прошлое в прошлом'.",
+              v: "Past Perfect — действие завершилось ДО другого момента в прошлом — 'прошлое в прошлом'. Формула: S + had + V3 + (дополнение).",
+            },
+            {
+              k: "formula",
+              v: "<span class='flabel'>Past Perfect</span><span class='fline'>+ S + had + V3</span><span class='fline'>– S + had not (hadn't) + V3</span><span class='fline'>? Had + S + V3 ?</span>",
             },
             {
               k: "example",
               v: "When I arrived, she had already left. (Когда я пришёл, она уже ушла.)",
+            },
+            {
+              k: "example",
+              v: "She hadn't finished the report. (Она не закончила отчёт.) / Had you met him before that day? (Ты встречал его до того дня?)",
             },
             {
               k: "text",
@@ -1060,27 +1144,51 @@
           uz: [
             {
               k: "text",
-              v: "Past Simple — o'tmishda muayyan paytda tugallangan harakatni bildiradi.",
+              v: "Past Simple — o'tmishda muayyan paytda tugallangan harakatni bildiradi. Formula: S + V2 + (to'ldiruvchi).",
+            },
+            {
+              k: "formula",
+              v: "<span class='flabel'>Past Simple</span><span class='fline'>+ S + V2 (to'g'ri fe'llar: V+ed)</span><span class='fline'>– S + did not (didn't) + V1</span><span class='fline'>? Did + S + V1 ?</span>",
             },
             {
               k: "example",
               v: "I ate breakfast at 7 am. (Men soat 7 da nonushta qildim.)",
             },
             {
+              k: "example",
+              v: "I didn't eat breakfast. (Men nonushta qilmadim.) / Did she go to Paris last year? (U o'tgan yili Parijga borganmi?)",
+            },
+            {
               k: "text",
-              v: "Past Continuous — o'tmishning muayyan pallasida davom etayotgan harakatni, ko'pincha boshqa harakat uchun fon sifatida yoki 'while' bilan bildiradi.",
+              v: "Past Continuous — o'tmishning muayyan pallasida davom etayotgan harakatni, ko'pincha boshqa harakat uchun fon sifatida yoki 'while' bilan bildiradi. Formula: S + was/were + V-ing + (to'ldiruvchi).",
+            },
+            {
+              k: "formula",
+              v: "<span class='flabel'>Past Continuous</span><span class='fline'>+ S + was/were + V-ing</span><span class='fline'>– S + was/were + not + V-ing</span><span class='fline'>? Was/Were + S + V-ing ?</span>",
             },
             {
               k: "example",
               v: "While I was cooking, she was cleaning. (Men ovqat pishirayotganimda, u tozalayotgan edi.)",
             },
             {
+              k: "example",
+              v: "I wasn't sleeping at 10 pm. (Men soat 10 da uxlamayotgan edim.) / Were you working at 9 am? (Sen soat 9 da ishlayotgan edingmi?)",
+            },
+            {
               k: "text",
-              v: "Past Perfect — o'tmishdagi boshqa bir paytdan OLDIN tugagan harakatni bildiradi — 'o'tmishning o'tmishi'.",
+              v: "Past Perfect — o'tmishdagi boshqa bir paytdan OLDIN tugagan harakatni bildiradi — 'o'tmishning o'tmishi'. Formula: S + had + V3 + (to'ldiruvchi).",
+            },
+            {
+              k: "formula",
+              v: "<span class='flabel'>Past Perfect</span><span class='fline'>+ S + had + V3</span><span class='fline'>– S + had not (hadn't) + V3</span><span class='fline'>? Had + S + V3 ?</span>",
             },
             {
               k: "example",
               v: "When I arrived, she had already left. (Men kelganimda, u allaqachon ketib bo'lgan edi.)",
+            },
+            {
+              k: "example",
+              v: "She hadn't finished the report. (U hisobotni tugatmagan edi.) / Had you met him before that day? (Sen u kundan oldin u bilan uchrashganmiding?)",
             },
             {
               k: "text",
@@ -1192,6 +1300,38 @@
               k: "example",
               v: "Why pattern: [reason] + why + [subject + verb] → That's the reason. She left for that reason. → That's the reason why she left.",
             },
+            {
+              k: "text",
+              v: "The tense inside a relative clause is chosen independently — it just has to fit the logic of that action, not match the tense of the main clause.",
+            },
+            {
+              k: "example",
+              v: "Present Simple (a fact now): The man who lives next door is a doctor.",
+            },
+            {
+              k: "example",
+              v: "Past Simple (happened before): The man who lived here before us was famous.",
+            },
+            {
+              k: "example",
+              v: "Present Perfect (still true up to now): The man who has lived here for 20 years knows everyone.",
+            },
+            {
+              k: "example",
+              v: "Future Simple (will happen later): The man who will live here next year is my cousin.",
+            },
+            {
+              k: "example",
+              v: "Present Continuous (happening now): This is the car which is being sold.",
+            },
+            {
+              k: "text",
+              v: "Exception: if you're telling a story in the past and the action in the relative clause happened even earlier, use Past Perfect there.",
+            },
+            {
+              k: "example",
+              v: "The man who had lived there for years finally moved away. (he lived there long before he moved — both events are in the past, but one happened earlier)",
+            },
           ],
           ru: [
             {
@@ -1302,6 +1442,38 @@
               k: "example",
               v: "Модель с why: [причина] + why + [подлежащее + глагол] → That's the reason. She left for that reason. → That's the reason why she left.",
             },
+            {
+              k: "text",
+              v: "Время внутри relative clause выбирается независимо — оно должно просто подходить по логике самого действия, а не подстраиваться под время главного предложения.",
+            },
+            {
+              k: "example",
+              v: "Present Simple (факт сейчас): The man who lives next door is a doctor. (Мужчина, который живёт по соседству, — врач.)",
+            },
+            {
+              k: "example",
+              v: "Past Simple (было раньше): The man who lived here before us was famous. (Мужчина, который жил здесь до нас, был знаменит.)",
+            },
+            {
+              k: "example",
+              v: "Present Perfect (актуально до сих пор): The man who has lived here for 20 years knows everyone. (Мужчина, который живёт здесь 20 лет, знает всех.)",
+            },
+            {
+              k: "example",
+              v: "Future Simple (будет потом): The man who will live here next year is my cousin. (Мужчина, который будет жить здесь в следующем году, — мой кузен.)",
+            },
+            {
+              k: "example",
+              v: "Present Continuous (происходит сейчас): This is the car which is being sold. (Это машина, которую сейчас продают.)",
+            },
+            {
+              k: "text",
+              v: "Исключение: если ты рассказываешь историю в прошлом, а действие в relative clause произошло ещё раньше — используй там Past Perfect.",
+            },
+            {
+              k: "example",
+              v: "The man who had lived there for years finally moved away. (Он жил там долго ДО того, как переехал — оба события в прошлом, но одно раньше другого.)",
+            },
           ],
           uz: [
             {
@@ -1411,6 +1583,38 @@
             {
               k: "example",
               v: "Why modeli: [sabab] + why + [ega + fe'l] → That's the reason. She left for that reason. → That's the reason why she left.",
+            },
+            {
+              k: "text",
+              v: "Relative clause ichidagi zamon mustaqil tanlanadi — u faqat shu harakatning mantig'iga mos kelishi kerak, bosh gapning zamoniga moslashtirilmaydi.",
+            },
+            {
+              k: "example",
+              v: "Present Simple (hozirgi fakt): The man who lives next door is a doctor. (Qo'shnida yashaydigan odam shifokor.)",
+            },
+            {
+              k: "example",
+              v: "Past Simple (avval bo'lgan): The man who lived here before us was famous. (Bizdan oldin bu yerda yashagan odam mashhur edi.)",
+            },
+            {
+              k: "example",
+              v: "Present Perfect (hozirgacha davom etmoqda): The man who has lived here for 20 years knows everyone. (20 yildan beri bu yerda yashayotgan odam hammani biladi.)",
+            },
+            {
+              k: "example",
+              v: "Future Simple (keyin bo'ladi): The man who will live here next year is my cousin. (Kelasi yili bu yerda yashaydigan odam mening amakivachcham.)",
+            },
+            {
+              k: "example",
+              v: "Present Continuous (hozir sodir bo'lmoqda): This is the car which is being sold. (Bu hozir sotilayotgan mashina.)",
+            },
+            {
+              k: "text",
+              v: "Istisno: agar o'tmishdagi voqeani hikoya qilayotgan bo'lsang va relative clause ichidagi harakat undan ham oldinroq sodir bo'lgan bo'lsa, u yerda Past Perfect ishlatiladi.",
+            },
+            {
+              k: "example",
+              v: "The man who had lived there for years finally moved away. (U ko'chib ketishidan ANCHA OLDIN o'sha yerda yashagan — ikkala voqea ham o'tmishda, lekin biri boshqasidan oldinroq.)",
             },
           ],
         },
@@ -2924,6 +3128,10 @@
         <div class="bubble">${block.v}</div>
       </div>`);
             chat.appendChild(row);
+          } else if (block.k === "formula") {
+            chat.appendChild(
+              el(`<div class="bubble formula">${block.v}</div>`),
+            );
           } else {
             chat.appendChild(
               el(`<div class="bubble example">${block.v}</div>`),
