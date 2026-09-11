@@ -1164,34 +1164,6 @@
               k: "example",
               v: "The person to whom I spoke was helpful. (formal) = The person who I spoke to was helpful. (informal)",
             },
-            {
-              k: "text",
-              v: "Formula for joining two sentences: take the shared noun from sentence 2, replace it with a relative pronoun, and attach the rest of sentence 2 right after that noun in sentence 1.",
-            },
-            {
-              k: "example",
-              v: "Subject pattern: [noun] + who/which + [verb + rest] → I know a man. He speaks five languages. → I know a man who speaks five languages.",
-            },
-            {
-              k: "example",
-              v: "Object pattern: [noun] + who(m)/which/that + [subject + verb] → This is the film. I watched it yesterday. → This is the film (which/that) I watched yesterday.",
-            },
-            {
-              k: "example",
-              v: "Whose pattern: [noun 1] + whose + [noun 2] + [verb + rest] → I have a friend. His car was stolen. → I have a friend whose car was stolen.",
-            },
-            {
-              k: "example",
-              v: "Where pattern: [place] + where + [subject + verb] → This is the town. I was born there. → This is the town where I was born.",
-            },
-            {
-              k: "example",
-              v: "When pattern: [time] + when + [subject + verb] → I remember the day. We met that day. → I remember the day when we met.",
-            },
-            {
-              k: "example",
-              v: "Why pattern: [reason] + why + [subject + verb] → That's the reason. She left for that reason. → That's the reason why she left.",
-            },
           ],
           ru: [
             {
@@ -1273,34 +1245,6 @@
             {
               k: "example",
               v: "The person to whom I spoke was helpful. (формально) = The person who I spoke to was helpful. (неформально)",
-            },
-            {
-              k: "text",
-              v: "Формула объединения двух предложений: возьми общее существительное из второго предложения, замени его на относительное местоимение и присоедини остаток второго предложения сразу после этого существительного в первом.",
-            },
-            {
-              k: "example",
-              v: "Модель с подлежащим: [сущ.] + who/which + [глагол + остальное] → I know a man. He speaks five languages. → I know a man who speaks five languages.",
-            },
-            {
-              k: "example",
-              v: "Модель с дополнением: [сущ.] + who(m)/which/that + [подлежащее + глагол] → This is the film. I watched it yesterday. → This is the film (which/that) I watched yesterday.",
-            },
-            {
-              k: "example",
-              v: "Модель с whose: [сущ. 1] + whose + [сущ. 2] + [глагол + остальное] → I have a friend. His car was stolen. → I have a friend whose car was stolen.",
-            },
-            {
-              k: "example",
-              v: "Модель с where: [место] + where + [подлежащее + глагол] → This is the town. I was born there. → This is the town where I was born.",
-            },
-            {
-              k: "example",
-              v: "Модель с when: [время] + when + [подлежащее + глагол] → I remember the day. We met that day. → I remember the day when we met.",
-            },
-            {
-              k: "example",
-              v: "Модель с why: [причина] + why + [подлежащее + глагол] → That's the reason. She left for that reason. → That's the reason why she left.",
             },
           ],
           uz: [
@@ -1384,41 +1328,13 @@
               k: "example",
               v: "The person to whom I spoke was helpful. (rasmiy) = The person who I spoke to was helpful. (norasmiy)",
             },
-            {
-              k: "text",
-              v: "Ikki gapni birlashtirish formulasi: ikkinchi gapdagi umumiy otni oling, uni nisbiy olmosh bilan almashtiring va ikkinchi gapning qolgan qismini birinchi gapdagi shu ot ortidan biriktiring.",
-            },
-            {
-              k: "example",
-              v: "Ega bilan model: [ot] + who/which + [fe'l + qolgan qism] → I know a man. He speaks five languages. → I know a man who speaks five languages.",
-            },
-            {
-              k: "example",
-              v: "To'ldiruvchi bilan model: [ot] + who(m)/which/that + [ega + fe'l] → This is the film. I watched it yesterday. → This is the film (which/that) I watched yesterday.",
-            },
-            {
-              k: "example",
-              v: "Whose modeli: [ot 1] + whose + [ot 2] + [fe'l + qolgan qism] → I have a friend. His car was stolen. → I have a friend whose car was stolen.",
-            },
-            {
-              k: "example",
-              v: "Where modeli: [joy] + where + [ega + fe'l] → This is the town. I was born there. → This is the town where I was born.",
-            },
-            {
-              k: "example",
-              v: "When modeli: [vaqt] + when + [ega + fe'l] → I remember the day. We met that day. → I remember the day when we met.",
-            },
-            {
-              k: "example",
-              v: "Why modeli: [sabab] + why + [ega + fe'l] → That's the reason. She left for that reason. → That's the reason why she left.",
-            },
           ],
         },
         passive: {
           en: [
             {
               k: "text",
-              v: "Passive Voice is used when the action or the receiver of the action is more important than who did it. Formula: to be (in the correct tense) + V3 (past participle).",
+              v: "Passive Voice is used when the action or the receiver of the action is more important than who did it. Formula: to be + V3 (past participle).",
             },
             {
               k: "example",
@@ -1426,43 +1342,51 @@
             },
             {
               k: "text",
-              v: "Passive Voice can be used in almost any tense. Only the auxiliary 'to be' changes with the tense — the main verb always stays in V3.",
+              v: "The passive form must match the tense of the original active sentence — present, past, perfect, or future.",
+            },
+            {
+              k: "text",
+              v: "Present Simple Passive: am/is/are + V3. Example: The room is cleaned every day.",
+            },
+            {
+              k: "text",
+              v: "Past Simple Passive: was/were + V3. Example: The room was cleaned yesterday.",
+            },
+            {
+              k: "text",
+              v: "Future Simple Passive: will be + V3. Example: The room will be cleaned tomorrow.",
+            },
+            {
+              k: "text",
+              v: "Present Continuous Passive: am/is/are being + V3. Example: The room is being cleaned now.",
+            },
+            {
+              k: "text",
+              v: "Past Continuous Passive: was/were being + V3. Example: The room was being cleaned at 5 o'clock.",
+            },
+            {
+              k: "text",
+              v: "Present Perfect Passive: have/has been + V3. Example: The room has been cleaned.",
+            },
+            {
+              k: "text",
+              v: "Past Perfect Passive: had been + V3. Example: The room had been cleaned before we arrived.",
+            },
+            {
+              k: "text",
+              v: "Future Perfect Passive: will have been + V3. Example: The room will have been cleaned by 6 o'clock.",
+            },
+            {
+              k: "text",
+              v: "Modal Passive: modal + be + V3. Example: The work must be finished today.",
+            },
+            {
+              k: "text",
+              v: "Future Continuous Passive and Perfect Continuous Passive forms are grammatically possible but are very uncommon and are normally avoided in standard teaching.",
             },
             {
               k: "example",
-              v: "Present Simple: am / is / are + V3 → English is spoken here.",
-            },
-            {
-              k: "example",
-              v: "Present Continuous: am / is / are + being + V3 → The car is being repaired.",
-            },
-            {
-              k: "example",
-              v: "Present Perfect: has / have + been + V3 → The work has been finished.",
-            },
-            {
-              k: "example",
-              v: "Past Simple: was / were + V3 → The letter was written yesterday.",
-            },
-            {
-              k: "example",
-              v: "Past Continuous: was / were + being + V3 → The house was being built last year.",
-            },
-            {
-              k: "example",
-              v: "Past Perfect: had + been + V3 → The report had been sent before the meeting started.",
-            },
-            {
-              k: "example",
-              v: "Future Simple: will + be + V3 → The bridge will be built next year.",
-            },
-            {
-              k: "example",
-              v: "Future Perfect: will + have + been + V3 → The project will have been completed by June.",
-            },
-            {
-              k: "example",
-              v: "With modal verbs: modal + be + V3 → The task must be done. / This mistake can be fixed.",
+              v: "The report has been completed. / The bridge will be built next year.",
             },
             {
               k: "text",
@@ -1472,7 +1396,7 @@
           ru: [
             {
               k: "text",
-              v: "Passive Voice используется, когда действие или объект важнее, чем тот, кто его совершил. Формула: to be (в нужном времени) + V3.",
+              v: "Passive Voice используется, когда действие или объект важнее, чем тот, кто его совершил. Формула: to be + V3.",
             },
             {
               k: "example",
@@ -1480,43 +1404,11 @@
             },
             {
               k: "text",
-              v: "Passive Voice можно использовать практически в любом времени. Меняется только вспомогательный глагол 'to be' — смысловой глагол всегда остаётся в форме V3.",
+              v: "Форма пассива должна соответствовать времени исходного активного предложения — настоящему, прошедшему, перфектному или будущему.",
             },
             {
               k: "example",
-              v: "Present Simple: am / is / are + V3 → English is spoken here. (По-английски здесь говорят.)",
-            },
-            {
-              k: "example",
-              v: "Present Continuous: am / is / are + being + V3 → The car is being repaired. (Машину сейчас ремонтируют.)",
-            },
-            {
-              k: "example",
-              v: "Present Perfect: has / have + been + V3 → The work has been finished. (Работа уже завершена.)",
-            },
-            {
-              k: "example",
-              v: "Past Simple: was / were + V3 → The letter was written yesterday. (Письмо было написано вчера.)",
-            },
-            {
-              k: "example",
-              v: "Past Continuous: was / were + being + V3 → The house was being built last year. (Дом строился в прошлом году.)",
-            },
-            {
-              k: "example",
-              v: "Past Perfect: had + been + V3 → The report had been sent before the meeting started. (Отчёт был отправлен до начала встречи.)",
-            },
-            {
-              k: "example",
-              v: "Future Simple: will + be + V3 → The bridge will be built next year. (Мост будет построен в следующем году.)",
-            },
-            {
-              k: "example",
-              v: "Future Perfect: will + have + been + V3 → The project will have been completed by June. (Проект будет завершён к июню.)",
-            },
-            {
-              k: "example",
-              v: "С модальными глаголами: modal + be + V3 → The task must be done. / This mistake can be fixed. (Задание должно быть выполнено. / Эту ошибку можно исправить.)",
+              v: "The bridge will be built next year. (Мост будет построен в следующем году.)",
             },
             {
               k: "text",
@@ -1526,7 +1418,7 @@
           uz: [
             {
               k: "text",
-              v: "Majhul nisbat (Passive Voice) harakatni bajaruvchidan ko'ra harakat yoki uning natijasi muhimroq bo'lganda ishlatiladi. Formula: to be (kerakli zamonda) + V3.",
+              v: "Majhul nisbat (Passive Voice) harakatni bajaruvchidan ko'ra harakat yoki uning natijasi muhimroq bo'lganda ishlatiladi. Formula: to be + V3.",
             },
             {
               k: "example",
@@ -1534,43 +1426,11 @@
             },
             {
               k: "text",
-              v: "Passive Voice deyarli har qanday zamonda ishlatilishi mumkin. Faqat 'to be' yordamchi fe'li zamonga qarab o'zgaradi — asosiy fe'l har doim V3 shaklida qoladi.",
+              v: "Majhul shakl asl faol gapning zamoniga mos kelishi kerak — hozirgi, o'tgan, perfekt yoki kelasi zamon.",
             },
             {
               k: "example",
-              v: "Present Simple: am / is / are + V3 → English is spoken here. (Bu yerda ingliz tilida gaplashishadi.)",
-            },
-            {
-              k: "example",
-              v: "Present Continuous: am / is / are + being + V3 → The car is being repaired. (Mashina hozir ta'mirlanmoqda.)",
-            },
-            {
-              k: "example",
-              v: "Present Perfect: has / have + been + V3 → The work has been finished. (Ish allaqachon tugatilgan.)",
-            },
-            {
-              k: "example",
-              v: "Past Simple: was / were + V3 → The letter was written yesterday. (Xat kecha yozilgan edi.)",
-            },
-            {
-              k: "example",
-              v: "Past Continuous: was / were + being + V3 → The house was being built last year. (Uy o'tgan yili qurilayotgan edi.)",
-            },
-            {
-              k: "example",
-              v: "Past Perfect: had + been + V3 → The report had been sent before the meeting started. (Hisobot uchrashuv boshlanishidan oldin yuborilgan edi.)",
-            },
-            {
-              k: "example",
-              v: "Future Simple: will + be + V3 → The bridge will be built next year. (Ko'prik kelasi yili quriladi.)",
-            },
-            {
-              k: "example",
-              v: "Future Perfect: will + have + been + V3 → The project will have been completed by June. (Loyiha iyungacha tugallangan bo'ladi.)",
-            },
-            {
-              k: "example",
-              v: "Modal fe'llar bilan: modal + be + V3 → The task must be done. / This mistake can be fixed. (Vazifa bajarilishi shart. / Bu xatoni tuzatish mumkin.)",
+              v: "The bridge will be built next year. (Ko'prik kelasi yili quriladi.)",
             },
             {
               k: "text",
