@@ -271,7 +271,7 @@
       .bubble.example {
         background: var(--teal-soft);
         border-color: transparent;
-        font-style: normal;
+        font-style: italic;
         border-left: 3px solid var(--teal);
         color: #12463d;
       }
@@ -279,25 +279,38 @@
         background: var(--amber-soft);
         border-color: transparent;
         border-left: 3px solid var(--amber);
-        color: #5c3f0d;
-        font-family: "Sora", sans-serif;
-        font-weight: 600;
-        font-size: 13.5px;
+        color: #6b4a12;
+        font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        letter-spacing: 0.01em;
+        max-width: 92%;
+      }
+      .tagged-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        max-width: 92%;
+        background: var(--surface);
+      }
+      .tagged-card .tag {
+        display: block;
+        background: var(--amber-soft);
+        color: #6b4a12;
+        font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 8px 14px;
+        border-bottom: 1px solid var(--line);
         letter-spacing: 0.01em;
       }
-      .bubble.formula .flabel {
-        display: inline-block;
-        font-family: "Inter", sans-serif;
-        font-weight: 700;
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        color: var(--amber);
-        margin-right: 6px;
-      }
-      .bubble.formula .fline {
-        display: block;
-        margin: 3px 0;
+      .tagged-card .tag-body {
+        padding: 12px 14px;
+        font-size: 14.5px;
+        line-height: 1.55;
+        font-style: italic;
+        color: #12463d;
+        background: var(--teal-soft);
       }
       .bubble b {
         font-family: "Sora", sans-serif;
@@ -1039,24 +1052,21 @@
               v: "Past Simple describes a completed action at a specific time in the past. Formula: S + V2 + (object).",
             },
             {
-              k: "formula",
-              v: "<span class='flabel'>Past Simple</span><span class='fline'>+ S + V2 (regular: V+ed)</span><span class='fline'>– S + did not (didn't) + V1</span><span class='fline'>? Did + S + V1 ?</span>",
-            },
-            {
               k: "example",
               v: "I ate breakfast at 7 am. / She went to Paris last year.",
             },
+            { k: "example", v: "Affirmative: S + V2 + O → She visited Rome." },
             {
               k: "example",
-              v: "I didn't eat breakfast. / Did she go to Paris last year?",
+              v: "Negative: S + did not + V1 + O → She did not visit Rome.",
+            },
+            {
+              k: "example",
+              v: "Question: Did + S + V1 + O? → Did she visit Rome?",
             },
             {
               k: "text",
               v: "Past Continuous describes an action in progress at a moment in the past, often as background for another action, or with 'while'. Formula: S + was/were + V-ing + (object).",
-            },
-            {
-              k: "formula",
-              v: "<span class='flabel'>Past Continuous</span><span class='fline'>+ S + was/were + V-ing</span><span class='fline'>– S + was/were + not + V-ing</span><span class='fline'>? Was/Were + S + V-ing ?</span>",
             },
             {
               k: "example",
@@ -1064,15 +1074,19 @@
             },
             {
               k: "example",
-              v: "I wasn't sleeping at 10 pm. / Were you working at 9 am?",
+              v: "Affirmative: S + was/were + V-ing + O → They were watching TV.",
+            },
+            {
+              k: "example",
+              v: "Negative: S + was/were + not + V-ing + O → They were not watching TV.",
+            },
+            {
+              k: "example",
+              v: "Question: Was/Were + S + V-ing + O? → Were they watching TV?",
             },
             {
               k: "text",
               v: "Past Perfect describes an action that finished before another moment in the past — 'the past of the past'. Formula: S + had + V3 + (object).",
-            },
-            {
-              k: "formula",
-              v: "<span class='flabel'>Past Perfect</span><span class='fline'>+ S + had + V3</span><span class='fline'>– S + had not (hadn't) + V3</span><span class='fline'>? Had + S + V3 ?</span>",
             },
             {
               k: "example",
@@ -1080,7 +1094,15 @@
             },
             {
               k: "example",
-              v: "She hadn't finished the report. / Had you met him before that day?",
+              v: "Affirmative: S + had + V3 + O → We had finished dinner.",
+            },
+            {
+              k: "example",
+              v: "Negative: S + had not + V3 + O → We had not finished dinner.",
+            },
+            {
+              k: "example",
+              v: "Question: Had + S + V3 + O? → Had we finished dinner?",
             },
             {
               k: "text",
@@ -1093,24 +1115,24 @@
               v: "Past Simple — законченное действие в конкретный момент прошлого. Формула: S + V2 + (дополнение).",
             },
             {
-              k: "formula",
-              v: "<span class='flabel'>Past Simple</span><span class='fline'>+ S + V2 (правильные: V+ed)</span><span class='fline'>– S + did not (didn't) + V1</span><span class='fline'>? Did + S + V1 ?</span>",
-            },
-            {
               k: "example",
               v: "I ate breakfast at 7 am. (Я позавтракал в 7 утра.)",
             },
             {
               k: "example",
-              v: "I didn't eat breakfast. (Я не завтракал.) / Did she go to Paris last year? (Она ездила в Париж в прошлом году?)",
+              v: "Утверждение: S + V2 + O → She visited Rome. (Она посетила Рим.)",
+            },
+            {
+              k: "example",
+              v: "Отрицание: S + did not + V1 + O → She did not visit Rome. (Она не посещала Рим.)",
+            },
+            {
+              k: "example",
+              v: "Вопрос: Did + S + V1 + O? → Did she visit Rome? (Она посещала Рим?)",
             },
             {
               k: "text",
               v: "Past Continuous — действие было в процессе в определённый момент прошлого, часто как фон для другого события или со словом 'while'. Формула: S + was/were + V-ing + (дополнение).",
-            },
-            {
-              k: "formula",
-              v: "<span class='flabel'>Past Continuous</span><span class='fline'>+ S + was/were + V-ing</span><span class='fline'>– S + was/were + not + V-ing</span><span class='fline'>? Was/Were + S + V-ing ?</span>",
             },
             {
               k: "example",
@@ -1118,15 +1140,19 @@
             },
             {
               k: "example",
-              v: "I wasn't sleeping at 10 pm. (Я не спал в 10 вечера.) / Were you working at 9 am? (Ты работал в 9 утра?)",
+              v: "Утверждение: S + was/were + V-ing + O → They were watching TV. (Они смотрели телевизор.)",
+            },
+            {
+              k: "example",
+              v: "Отрицание: S + was/were + not + V-ing + O → They were not watching TV. (Они не смотрели телевизор.)",
+            },
+            {
+              k: "example",
+              v: "Вопрос: Was/Were + S + V-ing + O? → Were they watching TV? (Они смотрели телевизор?)",
             },
             {
               k: "text",
               v: "Past Perfect — действие завершилось ДО другого момента в прошлом — 'прошлое в прошлом'. Формула: S + had + V3 + (дополнение).",
-            },
-            {
-              k: "formula",
-              v: "<span class='flabel'>Past Perfect</span><span class='fline'>+ S + had + V3</span><span class='fline'>– S + had not (hadn't) + V3</span><span class='fline'>? Had + S + V3 ?</span>",
             },
             {
               k: "example",
@@ -1134,7 +1160,15 @@
             },
             {
               k: "example",
-              v: "She hadn't finished the report. (Она не закончила отчёт.) / Had you met him before that day? (Ты встречал его до того дня?)",
+              v: "Утверждение: S + had + V3 + O → We had finished dinner. (Мы уже закончили ужин.)",
+            },
+            {
+              k: "example",
+              v: "Отрицание: S + had not + V3 + O → We had not finished dinner. (Мы ещё не закончили ужин.)",
+            },
+            {
+              k: "example",
+              v: "Вопрос: Had + S + V3 + O? → Had we finished dinner? (Мы уже закончили ужин?)",
             },
             {
               k: "text",
@@ -1147,24 +1181,24 @@
               v: "Past Simple — o'tmishda muayyan paytda tugallangan harakatni bildiradi. Formula: S + V2 + (to'ldiruvchi).",
             },
             {
-              k: "formula",
-              v: "<span class='flabel'>Past Simple</span><span class='fline'>+ S + V2 (to'g'ri fe'llar: V+ed)</span><span class='fline'>– S + did not (didn't) + V1</span><span class='fline'>? Did + S + V1 ?</span>",
-            },
-            {
               k: "example",
               v: "I ate breakfast at 7 am. (Men soat 7 da nonushta qildim.)",
             },
             {
               k: "example",
-              v: "I didn't eat breakfast. (Men nonushta qilmadim.) / Did she go to Paris last year? (U o'tgan yili Parijga borganmi?)",
+              v: "Tasdiq: S + V2 + O → She visited Rome. (U Rimga tashrif buyurdi.)",
+            },
+            {
+              k: "example",
+              v: "Inkor: S + did not + V1 + O → She did not visit Rome. (U Rimga tashrif buyurmadi.)",
+            },
+            {
+              k: "example",
+              v: "Savol: Did + S + V1 + O? → Did she visit Rome? (U Rimga tashrif buyurdimi?)",
             },
             {
               k: "text",
               v: "Past Continuous — o'tmishning muayyan pallasida davom etayotgan harakatni, ko'pincha boshqa harakat uchun fon sifatida yoki 'while' bilan bildiradi. Formula: S + was/were + V-ing + (to'ldiruvchi).",
-            },
-            {
-              k: "formula",
-              v: "<span class='flabel'>Past Continuous</span><span class='fline'>+ S + was/were + V-ing</span><span class='fline'>– S + was/were + not + V-ing</span><span class='fline'>? Was/Were + S + V-ing ?</span>",
             },
             {
               k: "example",
@@ -1172,15 +1206,19 @@
             },
             {
               k: "example",
-              v: "I wasn't sleeping at 10 pm. (Men soat 10 da uxlamayotgan edim.) / Were you working at 9 am? (Sen soat 9 da ishlayotgan edingmi?)",
+              v: "Tasdiq: S + was/were + V-ing + O → They were watching TV. (Ular televizor ko'rayotgan edi.)",
+            },
+            {
+              k: "example",
+              v: "Inkor: S + was/were + not + V-ing + O → They were not watching TV. (Ular televizor ko'rmayotgan edi.)",
+            },
+            {
+              k: "example",
+              v: "Savol: Was/Were + S + V-ing + O? → Were they watching TV? (Ular televizor ko'rayotgan edimi?)",
             },
             {
               k: "text",
               v: "Past Perfect — o'tmishdagi boshqa bir paytdan OLDIN tugagan harakatni bildiradi — 'o'tmishning o'tmishi'. Formula: S + had + V3 + (to'ldiruvchi).",
-            },
-            {
-              k: "formula",
-              v: "<span class='flabel'>Past Perfect</span><span class='fline'>+ S + had + V3</span><span class='fline'>– S + had not (hadn't) + V3</span><span class='fline'>? Had + S + V3 ?</span>",
             },
             {
               k: "example",
@@ -1188,7 +1226,15 @@
             },
             {
               k: "example",
-              v: "She hadn't finished the report. (U hisobotni tugatmagan edi.) / Had you met him before that day? (Sen u kundan oldin u bilan uchrashganmiding?)",
+              v: "Tasdiq: S + had + V3 + O → We had finished dinner. (Biz kechki ovqatni tugatgan edik.)",
+            },
+            {
+              k: "example",
+              v: "Inkor: S + had not + V3 + O → We had not finished dinner. (Biz kechki ovqatni hali tugatmagan edik.)",
+            },
+            {
+              k: "example",
+              v: "Savol: Had + S + V3 + O? → Had we finished dinner? (Biz kechki ovqatni tugatgan edikmi?)",
             },
             {
               k: "text",
@@ -3108,6 +3154,77 @@
         return row;
       }
 
+      const FORMULA_MARKERS = [
+        "Formula:",
+        "Формула:",
+        "Formulas:",
+        "Формулы:",
+        "Formulalar:",
+      ];
+
+      function renderTheoryBlock(chat, block) {
+        if (block.k === "text") {
+          let idx = -1;
+          for (const m of FORMULA_MARKERS) {
+            const i = block.v.indexOf(m);
+            if (i !== -1 && (idx === -1 || i < idx)) idx = i;
+          }
+          if (idx === -1) {
+            chat.appendChild(
+              el(`<div class="teacher-row">
+        <div class="avatar">Aa</div>
+        <div class="bubble">${block.v}</div>
+      </div>`),
+            );
+          } else if (idx === 0) {
+            chat.appendChild(
+              el(`<div class="bubble formula">${block.v}</div>`),
+            );
+          } else {
+            const explanation = block.v.slice(0, idx).trim();
+            const formula = block.v.slice(idx).trim();
+            chat.appendChild(
+              el(`<div class="teacher-row">
+        <div class="avatar">Aa</div>
+        <div class="bubble">${explanation}</div>
+      </div>`),
+            );
+            chat.appendChild(
+              el(`<div class="bubble formula">${formula}</div>`),
+            );
+          }
+          return;
+        }
+        // block.k === "example"
+        const arrow = block.v.indexOf("→");
+        if (arrow !== -1) {
+          const tag = block.v.slice(0, arrow).trim();
+          const body = block.v.slice(arrow + 1).trim();
+          chat.appendChild(
+            el(
+              `<div class="tagged-card"><div class="tag">${tag}</div><div class="tag-body">${body}</div></div>`,
+            ),
+          );
+          return;
+        }
+        const colon = block.v.indexOf(":");
+        if (
+          colon !== -1 &&
+          colon <= 50 &&
+          !block.v.slice(0, colon).includes(".")
+        ) {
+          const tag = block.v.slice(0, colon).trim();
+          const body = block.v.slice(colon + 1).trim();
+          chat.appendChild(
+            el(
+              `<div class="tagged-card"><div class="tag">${tag}</div><div class="tag-body">${body}</div></div>`,
+            ),
+          );
+          return;
+        }
+        chat.appendChild(el(`<div class="bubble example">${block.v}</div>`));
+      }
+
       function renderTheoryPanel() {
         const wrap = document.createElement("div");
         wrap.className = "panel";
@@ -3121,23 +3238,9 @@
           el(`<h2 class="panel-title">${t().topics[state.topic]}</h2>`),
         );
         const chat = el(`<div class="chat"></div>`);
-        THEORY[state.topic][state.lang].forEach((block) => {
-          if (block.k === "text") {
-            const row = el(`<div class="teacher-row">
-        <div class="avatar">Aa</div>
-        <div class="bubble">${block.v}</div>
-      </div>`);
-            chat.appendChild(row);
-          } else if (block.k === "formula") {
-            chat.appendChild(
-              el(`<div class="bubble formula">${block.v}</div>`),
-            );
-          } else {
-            chat.appendChild(
-              el(`<div class="bubble example">${block.v}</div>`),
-            );
-          }
-        });
+        THEORY[state.topic][state.lang].forEach((block) =>
+          renderTheoryBlock(chat, block),
+        );
         wrap.appendChild(chat);
         return wrap;
       }
